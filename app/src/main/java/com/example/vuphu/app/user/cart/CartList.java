@@ -29,6 +29,7 @@ public class CartList extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+
         // specify an adapter (see also next example)
         mAdapter = new CartAdapter();
         mRecyclerView.setAdapter(mAdapter);
