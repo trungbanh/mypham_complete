@@ -18,4 +18,13 @@
 
     </android.support.v7.widget.RecyclerView>
 
+    <Button
+        android:background="@drawable/bg_sign_up"
+        android:text="@string/buy"
+        android:textSize="20sp"
+        android:textColor="#562087"
+        android:layout_below="@id/item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>
