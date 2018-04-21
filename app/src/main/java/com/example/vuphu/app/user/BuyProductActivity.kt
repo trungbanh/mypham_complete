@@ -1,6 +1,7 @@
 package com.example.vuphu.app.user
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 
 import com.example.vuphu.app.AcsynHttp.AsyncHttpApi
+import com.example.vuphu.app.MainActivity
 import com.example.vuphu.app.R
 import com.example.vuphu.app.`object`.Payment
 import com.example.vuphu.app.`object`.ProductInCart
@@ -83,6 +85,9 @@ class BuyProductActivity : AppCompatActivity() {
             } else {
                 //add to cart
                 Cart.getInstance().addProduct( ProductInCart(id,no),name)
+                Toast.makeText(applicationContext,"add to list complete !!!",Toast.LENGTH_SHORT).show()
+                val intent = Intent(this,MainActivity::class.java)
+                startActivity(intent)
                 //postPostOrder(product.id, no)
             }
         }

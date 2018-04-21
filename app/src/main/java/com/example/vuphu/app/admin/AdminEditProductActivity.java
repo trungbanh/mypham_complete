@@ -35,6 +35,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -183,24 +184,23 @@ public class AdminEditProductActivity extends AppCompatActivity {
         }
     }
     private void UpdateProduct () {
-        File im = new File (getRealPathFromURI(uri));
-        RequestBody image = RequestBody.create(MediaType.parse("image/*"),im);
-        RequestBody name = RequestBody.create(MediaType.parse("text/plain"),edt_name_product.getText().toString());
-        RequestBody price = RequestBody.create(MediaType.parse("text/plain"),edt_price.getText().toString());
-        RequestBody quatity = RequestBody.create(MediaType.parse("text/plain"),edt_quantity.getText().toString());
-        RequestBody description = RequestBody.create(MediaType.parse("text/plain"),edt_desc.getText().toString());
-        RequestBody type = RequestBody.create(MediaType.parse("text/plain"),select.getText().toString());
-        ApiUtils.getAPIService().upDateProduct(
-                "Bearer "+ pre.getString(NetworkConst.token,""),
-                image,name,price,quatity,description,type).enqueue(new Callback<Void>() {
+        RequestParams params = new RequestParams();
+        params.put("name",edt_name_product.getText().toString());
+        params.put("quatity",edt_quantity.getText().toString());
+        params.put("description",edt_desc.getText().toString());
+        params.put("type",select.getText().toString());
+
+        AsyncHttpApi.put(pre.getString(NetworkConst.token,""),"/products/"+product.getId(),params,new JsonHttpResponseHandler(){
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                Log.i("se",response.message());
-                Log.i("se",response.isSuccessful()+"");
-            }
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.i("sf",t.getMessage());
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                try {
+                    if (response.get("message").toString()=="Product updated!"){
+                        Toast.makeText(AdminEditProductActivity.this, "Update complete", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

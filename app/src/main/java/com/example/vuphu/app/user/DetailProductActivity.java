@@ -43,15 +43,6 @@ public class DetailProductActivity extends AppCompatActivity {
         String pathImage = intent.getStringExtra("productIMAGE");
         String des = intent.getStringExtra("productDES");
 
-
-        /*intent.putExtra("productID",list.get(position).getId());
-                        intent.putExtra("productNAME",list.get(position).getId());
-                        intent.putExtra("productPRICE",list.get(position).getId());
-                        intent.putExtra("productTYPE",list.get(position).getId());
-                        intent.putExtra("productQUANLITY",list.get(position).getId());
-                        intent.putExtra("productIMAGE",list.get(position).getId());
-                        intent.putExtra("productDES",list.get(position).getId());*/
-
         setTitle(name);
 
         imageView = findViewById(R.id.img_detail_product);

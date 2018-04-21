@@ -12,8 +12,10 @@ import android.widget.Button;
 import com.example.vuphu.app.AcsynHttp.AsyncHttpApi;
 import com.example.vuphu.app.AcsynHttp.NetworkConst;
 import com.example.vuphu.app.R;
+import com.example.vuphu.app.object.Payment;
 import com.example.vuphu.app.object.ProductInCart;
 import com.example.vuphu.app.user.adapter.CartAdapter;
+import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -71,53 +73,26 @@ public class CartList extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 Log.i("post product",response.toString());
+                Gson gson = new Gson();
+                Payment pay = gson.fromJson(response.toString(),Payment.class);
+                payment(pay.getCreatedOrder().getId());
             }
-
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
                 Log.i("post product",errorResponse.toString());
             }
-
+        });
+    }
+    private void payment (String idOrder) {
+        RequestParams params = new RequestParams();
+        params.put("_id", idOrder);
+        AsyncHttpApi.post(pre.getString(NetworkConst.token,""),"/payment",params,new JsonHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Log.i("post product",response.toString());
+
             }
         });
     }
-
-    /*private fun postPostOrder(idProduct: String?, num: Int) {
-        val params = RequestParams()
-        params.put("productId", idProduct)
-        params.put("quatityBuy", no)
-
-        AsyncHttpApi.post(pre!!.getString("token", ""), "/orders", params, object : JsonHttpResponseHandler() {
-
-            override fun onSuccess(statusCode: Int, headers: Array<Header>?, response: JSONObject?) {
-                Log.i("buy", response!!.toString())
-                val gson = Gson()
-
-                    val payment = gson.fromJson<Payment>(response.toString(), Payment::class.java!!)
-                    paymentFuntion(pre!!.getString("token", ""), payment.createdOrder.id.toString())
-
-            }
-
-            override fun onFailure(statusCode: Int, headers: Array<Header>?, throwable: Throwable, errorResponse: JSONObject?) {
-                Log.i("buy", errorResponse!!.toString())
-            }
-        })
-    }
-
-    private fun paymentFuntion(token: String?, idOrder: String) {
-        val params = RequestParams()
-        params.put("_id", idOrder)
-        AsyncHttpApi.post(token, "/payment", params, object : JsonHttpResponseHandler() {
-            override fun onSuccess(statusCode: Int, headers: Array<Header>?, response: JSONObject?) {
-                if (response != null) {
-                    Toast.makeText(this@BuyProductActivity, "order complete !!!", Toast.LENGTH_SHORT).show()
-                }
-            }
-        })
-    }*/
 }

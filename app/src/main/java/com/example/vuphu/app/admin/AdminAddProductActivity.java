@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -32,8 +33,10 @@ import com.example.vuphu.app.RetrofitAPI.ApiUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 
+import id.zelory.compressor.Compressor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -44,7 +47,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AdminAddProductActivity extends AppCompatActivity {
-
 
     private EditText edt_name_product, edt_price, edt_desc,edt_quantity;
     private TextView tvtype;
@@ -106,7 +108,6 @@ public class AdminAddProductActivity extends AppCompatActivity {
 
     private void setDataType() {
 
-
         if(TextUtils.isEmpty(edt_name_product.getText().toString())) {
             edt_name_product.setError("cant be empty");
         }
@@ -160,15 +161,14 @@ public class AdminAddProductActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode==0) {
             // Get the Image from data
             Uri selectedImage = data.getData();
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+            Cursor cursor = getContentResolver().query(selectedImage, null, null, null, null);
             if (cursor != null){
 
             }
             cursor.moveToFirst();
 
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            int columnIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
             mediaPath = cursor.getString(columnIndex);
             // Set the Image in ImageView for Previewing the Media
             img_product.setImageBitmap(BitmapFactory.decodeFile(mediaPath));
@@ -179,20 +179,38 @@ public class AdminAddProductActivity extends AppCompatActivity {
         }
     }
     private void addProduct () {
-
-        RequestBody name = RequestBody.create(MediaType.parse("text/plain"),edt_name_product.getText().toString());
-        RequestBody price = RequestBody.create(MediaType.parse("text/plain"),edt_price.getText().toString());
-        RequestBody quatity = RequestBody.create(MediaType.parse("text/plain"),edt_quantity.getText().toString());
-        RequestBody description = RequestBody.create(MediaType.parse("text/plain"),edt_desc.getText().toString());
-        RequestBody type = RequestBody.create(MediaType.parse("text/plain"),tvtype.getText().toString());
-
         File file = new File(mediaPath);
-        final RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+        File compressedImageFile = null;
+
+        try {
+            compressedImageFile = new Compressor(this).compressToFile(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        RequestBody name = RequestBody.create(MediaType.parse("multipart/form-data"),edt_name_product.getText().toString());
+        RequestBody price = RequestBody.create(MediaType.parse("multipart/form-data"),edt_price.getText().toString());
+        RequestBody quatity = RequestBody.create(MediaType.parse("multipart/form-data"),edt_quantity.getText().toString());
+        RequestBody description = RequestBody.create(MediaType.parse("multipart/form-data"),edt_desc.getText().toString());
+        RequestBody type = RequestBody.create(MediaType.parse("multipart/form-data"),tvtype.getText().toString());
+
+
+        MultipartBody.Builder builder = new MultipartBody.Builder()
+            .setType(MultipartBody.FORM);
+
+        RequestBody body1 = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        builder.addFormDataPart("productImage", file.getName(), body1);
+
+
+        MultipartBody requestBody = builder.build();
+
+
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), compressedImageFile);
         MultipartBody.Part imageBody = MultipartBody.Part.createFormData("productImage", file.getName(), reqFile);
 
         ApiUtils.getAPIService().upLoadProduct(
-                    "Bearer "+ pre.getString(NetworkConst.token,""),
-                imageBody,name,price,quatity,description,type).enqueue(new Callback<Void>() {
+                    "Bearer "+ pre.getString(NetworkConst.token,""),imageBody)
+                .enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 Log.i("se",response+"");
