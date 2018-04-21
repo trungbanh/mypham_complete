@@ -7,17 +7,26 @@ public class ProductInCart {
 
     @SerializedName("product")
     @Expose
+    private String productid;
+    @SerializedName("product")
+    @Expose
     private String product;
     @SerializedName("quatityBuy")
     @Expose
     private Integer quatityBuy;
 
-    public String getproduct() {
-        return product;
+    public ProductInCart(String id ,int num) {
+        this.productid = id ;
+        this.quatityBuy = num ;
     }
 
-    public void setproduct(String product) {
-        this.product = product;
+    public String getproductid() {
+        return productid;
+    }
+
+
+    public void setproduct(String productid) {
+        this.productid = productid;
     }
 
     public Integer getQuatityBuy() {

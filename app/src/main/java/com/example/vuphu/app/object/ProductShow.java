@@ -12,4 +12,11 @@ public class ProductShow {
         this.name = name ;
         this.num = quatityBuy;
     }
+
+    public String getName () {
+        return this.name;
+    }
+    public int getQuatity () {
+        return this.num;
+    }
 }

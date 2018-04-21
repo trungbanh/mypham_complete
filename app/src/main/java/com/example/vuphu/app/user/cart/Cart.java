@@ -4,6 +4,7 @@ import com.example.vuphu.app.object.ProductInCart;
 import com.example.vuphu.app.object.ProductShow;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Cart {
     private ArrayList<ProductInCart> productBuys ;
@@ -37,18 +38,9 @@ public class Cart {
         return  arrayList;
     }
 
-    public String getPostJson () {
-        String temp ="{ \"products\": [";
-        for (int i = 0 ;i<productBuys.size();i++) {
-            temp = temp+"{";
-            temp = temp +"\"product\":"+productBuys.get(i).getproduct() +",";
-            temp = temp + "\"quatityBuy\":" +productBuys.get(i).getQuatityBuy();
-            temp = temp +"},";
+    public List<ProductInCart> getPostJson () {
+        return productBuys;
 
-        }
-        temp = temp.substring(0,temp.length()-2);
-        temp= temp+"}]";
-        return temp;
     }
 /*{
 	"products": [

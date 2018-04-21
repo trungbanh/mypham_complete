@@ -28,6 +28,7 @@ import com.example.vuphu.app.user.AddMoneyFragment;
 import com.example.vuphu.app.user.ProfileFragment;
 import com.example.vuphu.app.user.UserProfileTab.AddMoneyHistoryFragment;
 import com.example.vuphu.app.user.UserProfileTab.OrderHistoryFragment;
+import com.example.vuphu.app.user.cart.CartList;
 import com.example.vuphu.app.user.catogries.CatogriesFragment;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -78,7 +79,8 @@ public class MainActivity extends AppCompatActivity
         cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent i = new Intent(getApplicationContext(), CartList.class);
+                startActivity(i);
             }
         });
     }

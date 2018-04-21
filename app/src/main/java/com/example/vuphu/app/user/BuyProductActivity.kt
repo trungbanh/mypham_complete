@@ -13,6 +13,7 @@ import android.widget.Toast
 import com.example.vuphu.app.AcsynHttp.AsyncHttpApi
 import com.example.vuphu.app.R
 import com.example.vuphu.app.`object`.Payment
+import com.example.vuphu.app.`object`.ProductInCart
 import com.example.vuphu.app.user.cart.Cart
 import com.google.gson.Gson
 import com.loopj.android.http.JsonHttpResponseHandler
@@ -81,7 +82,7 @@ class BuyProductActivity : AppCompatActivity() {
                 Toast.makeText(this@BuyProductActivity, "no enough money", Toast.LENGTH_SHORT).show()
             } else {
                 //add to cart
-                Cart.getInstance().AddProduct(id,no)
+                Cart.getInstance().addProduct( ProductInCart(id,no),name)
                 //postPostOrder(product.id, no)
             }
         }
@@ -99,40 +100,6 @@ class BuyProductActivity : AppCompatActivity() {
         buy = findViewById(R.id.btn_buy)
     }
 
-    private fun postPostOrder(idProduct: String?, num: Int) {
-        val params = RequestParams()
-        params.put("productId", idProduct)
-        params.put("quatityBuy", no)
 
-        AsyncHttpApi.post(pre!!.getString("token", ""), "/orders", params, object : JsonHttpResponseHandler() {
-
-            override fun onSuccess(statusCode: Int, headers: Array<Header>?, response: JSONObject?) {
-                Log.i("buy", response!!.toString())
-                val gson = Gson()
-
-                if (response != null) {
-
-                    val payment = gson.fromJson<Payment>(response.toString(), Payment::class.java!!)
-                    paymentFuntion(pre!!.getString("token", ""), payment.createdOrder.id.toString())
-                }
-            }
-
-            override fun onFailure(statusCode: Int, headers: Array<Header>?, throwable: Throwable, errorResponse: JSONObject?) {
-                Log.i("buy", errorResponse!!.toString())
-            }
-        })
-    }
-
-    private fun paymentFuntion(token: String?, idOrder: String) {
-        val params = RequestParams()
-        params.put("_id", idOrder)
-        AsyncHttpApi.post(token, "/payment", params, object : JsonHttpResponseHandler() {
-            override fun onSuccess(statusCode: Int, headers: Array<Header>?, response: JSONObject?) {
-                if (response != null) {
-                    Toast.makeText(this@BuyProductActivity, "order complete !!!", Toast.LENGTH_SHORT).show()
-                }
-            }
-        })
-    }
 
 }

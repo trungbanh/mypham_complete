@@ -24,6 +24,7 @@ public class AsyncHttpApi {
         client.addHeader("Content-Type","application/x-www-form-urlencoded");
         client.post(getAbsoluteUrl(url), params, responseHandler);
     }
+
     public static void post_signUp(String url, RequestParams params, JsonHttpResponseHandler responseHandler) {
         client.post(getAbsoluteUrl(url), params, responseHandler);
     }

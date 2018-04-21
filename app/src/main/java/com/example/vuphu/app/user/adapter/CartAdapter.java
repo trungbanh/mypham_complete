@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.vuphu.app.R;
-import com.example.vuphu.app.object.ProductInCart;
 import com.example.vuphu.app.object.ProductShow;
 
 import java.util.ArrayList;
@@ -19,8 +18,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public CartAdapter (ArrayList<ProductShow> productInCarts) {
         this.productInCarts =productInCarts ;
     }
-
-
     @NonNull
     @Override
     public CartAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -31,6 +28,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     }
     @Override
     public void onBindViewHolder(@NonNull CartAdapter.ViewHolder holder, int position) {
+        holder.name.setText(productInCarts.get(position).getName());
+        holder.number.setText(String.valueOf(productInCarts.get(position).getQuatity()));
     }
     @Override
     public int getItemCount() {
@@ -39,7 +38,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
         private TextView number;
-
 
         public ViewHolder(View itemView) {
             super(itemView);

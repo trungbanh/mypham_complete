@@ -7,10 +7,17 @@
     android:orientation="vertical"
     tools:context=".user.cart.CartList">
 
-    <EditText
+    <TextView
+        android:textSize="25dp"
         android:text="List Product Order"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#402136"
+        android:layout_marginBottom="5dp"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_list_product_in_cart"
         android:layout_width="match_parent"
@@ -19,6 +26,7 @@
     </android.support.v7.widget.RecyclerView>
 
     <Button
+        android:id="@+id/btn_buy"
         android:background="@drawable/bg_sign_up"
         android:text="@string/buy"
         android:textSize="20sp"
