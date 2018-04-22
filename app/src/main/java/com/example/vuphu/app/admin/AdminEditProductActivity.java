@@ -64,7 +64,6 @@ public class AdminEditProductActivity extends AppCompatActivity {
     private Spinner type_product;
     private ImageView img_product;
     private Product product;
-    private FloatingActionButton btn_update_img;
     private ArrayAdapter<String> listType ;
     private Button btn_update;
 
@@ -118,7 +117,6 @@ public class AdminEditProductActivity extends AppCompatActivity {
         edt_quantity = findViewById(R.id.edt_admin_quantity_product);
         type_product = findViewById(R.id.spinner_type_product);
         img_product = findViewById(R.id.img_admin_edit_product);
-        btn_update_img = findViewById(R.id.btn_admin_edit_image);
         btn_update = findViewById(R.id.btn_admin_edit_product);
         select = findViewById(R.id.tv_select);
         listType = new ArrayAdapter<>(this.getApplicationContext(),android.R.layout.simple_spinner_item,arr);
@@ -135,12 +133,6 @@ public class AdminEditProductActivity extends AppCompatActivity {
                 .replace("\\", "/")).error(R.drawable.ic_terrain_black_24dp)
                 .placeholder(R.drawable.mypham).into(img_product);
 
-        btn_update_img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                performFileSearch();
-            }
-        });
 
         btn_update.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,11 +151,6 @@ public class AdminEditProductActivity extends AppCompatActivity {
 
             }
         });
-    }
-    public void performFileSearch() {
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-        photoPickerIntent.setType("image/*");
-        startActivityForResult(photoPickerIntent, 0);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
