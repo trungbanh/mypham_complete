@@ -47,7 +47,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/DialogActivityTheme" />
         <activity android:name=".admin.AdminAddProductActivity" />
-        <activity android:name=".user.cart.CartList"></activity>
+        <activity android:name=".user.cart.CartList" />
+        <activity android:name=".Dialog.submit" />
+        <activity android:name=".Dialog.notyfi"></activity>
     </application>
 
 </manifest>

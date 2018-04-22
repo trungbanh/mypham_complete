@@ -12,6 +12,7 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -28,14 +29,13 @@ public interface Api {
     @POST("/products")
     @Headers("Content-Type: application/json")
     Call<Void> upLoadProduct (@Header("Authorization") String authorization,
-                              @Part MultipartBody.Part body
-                              );
-    /* @Part MultipartBody.Part body,
-    @Part("name") RequestBody name,
+                              @Part("productImage") RequestBody body,
+                              @Part("name") RequestBody name,
                               @Part("price") RequestBody price,
                               @Part("quatity") RequestBody quantity,
                               @Part("description") RequestBody des,
-                              @Part("type") RequestBody type*/
+                              @Part("type") RequestBody type
+                              );
 
 
     @GET("/orders")

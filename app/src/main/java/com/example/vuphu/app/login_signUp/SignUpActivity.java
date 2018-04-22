@@ -1,5 +1,6 @@
 package com.example.vuphu.app.login_signUp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.vuphu.app.AcsynHttp.AsyncHttpApi;
+import com.example.vuphu.app.Dialog.notyfi;
+import com.example.vuphu.app.MainActivity;
 import com.example.vuphu.app.object.SignUpToken;
 import com.example.vuphu.app.R;
 import com.google.gson.Gson;
@@ -64,10 +67,15 @@ public class SignUpActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 token = gson.fromJson(json,SignUpToken.class);
                 if (token.getToken() != null) {
+                    notyfi no = new notyfi((Activity) getBaseContext());
+                    no.show();
                     Toast.makeText(SignUpActivity.this, "signup sucess", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     intent.putExtra("mail",emailText);
                     intent.putExtra("pass",passText);
+
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
                     startActivity(intent);
                 } else {
                     Toast.makeText(SignUpActivity.this, "signup fail", Toast.LENGTH_SHORT).show();

@@ -2,6 +2,7 @@ package com.example.vuphu.app.admin;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 
 import com.example.vuphu.app.AcsynHttp.AsyncHttpApi;
 import com.example.vuphu.app.AcsynHttp.NetworkConst;
+import com.example.vuphu.app.Dialog.notyfi;
 import com.example.vuphu.app.R;
 import com.example.vuphu.app.RetrofitAPI.ApiUtils;
 import com.example.vuphu.app.object.Product;
@@ -57,7 +59,7 @@ public class AdminEditProductActivity extends AppCompatActivity {
 
 
 
-    private EditText edt_name_product, edt_price, edt_desc, edt_quantity;
+    private EditText edt_name_product, edt_desc, edt_quantity;
     private TextView select ;
     private Spinner type_product;
     private ImageView img_product;
@@ -94,7 +96,6 @@ public class AdminEditProductActivity extends AppCompatActivity {
         if (intent!=null) {
             product.setId(intent.getStringExtra("productID"));
             product.setName(intent.getStringExtra("productNAME"));
-            product.setPrice(intent.getIntExtra("productPRICE",0));
             product.setQuatity(intent.getIntExtra("productQUATITY",0));
             product.setDescription(intent.getStringExtra("productDES"));
             product.setProductImage(intent.getStringExtra("productIMAGE"));
@@ -112,7 +113,7 @@ public class AdminEditProductActivity extends AppCompatActivity {
     }
     private void init() {
         edt_name_product = findViewById(R.id.edt_admin_name_product);
-        edt_price = findViewById(R.id.edt_admin_product_price);
+
         edt_desc = findViewById(R.id.edt_admin_product_content);
         edt_quantity = findViewById(R.id.edt_admin_quantity_product);
         type_product = findViewById(R.id.spinner_type_product);
@@ -127,7 +128,6 @@ public class AdminEditProductActivity extends AppCompatActivity {
     private void setDataType() {
         setTitle(product.getName());
         edt_name_product.setText(product.getName());
-        edt_price.setText (String.valueOf(product.getPrice()));
         edt_quantity.setText(String.valueOf(product.getQuatity()));
         //type_product.setText(product.getType());
         edt_desc.setText(product.getDescription());
@@ -187,34 +187,28 @@ public class AdminEditProductActivity extends AppCompatActivity {
         RequestParams params = new RequestParams();
         params.put("name",edt_name_product.getText().toString());
         params.put("quatity",edt_quantity.getText().toString());
+        //params.put("price",edt_price.getText().toString());
         params.put("description",edt_desc.getText().toString());
         params.put("type",select.getText().toString());
 
-        AsyncHttpApi.put(pre.getString(NetworkConst.token,""),"/products/"+product.getId(),params,new JsonHttpResponseHandler(){
+        AsyncHttpApi.put(pre.getString(NetworkConst.token,""),"/products/"
+                +product.getId(), params,new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
+                response.toString();
                 try {
-                    if (response.get("message").toString()=="Product updated!"){
+                    if (response.get("message").toString().equals("Product updated!")){
                         Toast.makeText(AdminEditProductActivity.this, "Update complete", Toast.LENGTH_SHORT).show();
+                        notyfi no = new notyfi(AdminEditProductActivity.this);
+                        no.setText("edit product complete !!!");
+                        no.show();
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
-    }
-    private String getRealPathFromURI(Uri contentURI) {
-        String result;
-        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null) {
-            result = contentURI.getPath();
-        } else {
-            cursor.moveToFirst();
-            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            result = cursor.getString(idx);
-            cursor.close();
-        }
-        return result;
     }
 }

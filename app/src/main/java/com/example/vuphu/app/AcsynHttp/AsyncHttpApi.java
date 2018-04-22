@@ -3,6 +3,7 @@ package com.example.vuphu.app.AcsynHttp;
 import android.content.Context;
 
 import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -41,9 +42,9 @@ public class AsyncHttpApi {
         client.delete(getAbsoluteUrl(url),responseHandler);
     }
 
-    public static void post_admin_product(String token,String url, RequestParams params, JsonHttpResponseHandler responseHandler) {
+    public static void post_admin_product(String token,String url, RequestParams params,AsyncHttpResponseHandler responseHandler) {
         client.addHeader("Authorization","Bearer "+token);
-        client.addHeader("Content-Type","multipart/form-data; boundary=MultipartBoundry");
+        client.addHeader("Content-Type","multipart/form-data");
         client.post(getAbsoluteUrl(url), params, responseHandler);
     }
 

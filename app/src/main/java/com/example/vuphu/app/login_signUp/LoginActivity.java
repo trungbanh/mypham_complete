@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.vuphu.app.AcsynHttp.AsyncHttpApi;
 import com.example.vuphu.app.AcsynHttp.NetworkConst;
+import com.example.vuphu.app.Dialog.notyfi;
 import com.example.vuphu.app.MainActivity;
 import com.example.vuphu.app.object.SignUpToken;
 import com.example.vuphu.app.R;
@@ -55,7 +56,10 @@ public class LoginActivity extends AppCompatActivity {
 
         if (!pre.getString(NetworkConst.token,"").isEmpty() &&
                 !pre.getString("type_user","").isEmpty()){
+            notyfi no = new notyfi(this);
+            no.show();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
             finish();
         }
         SiginClick ();

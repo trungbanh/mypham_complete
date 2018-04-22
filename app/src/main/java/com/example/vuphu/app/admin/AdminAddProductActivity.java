@@ -27,21 +27,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.vuphu.app.AcsynHttp.AsyncHttpApi;
 import com.example.vuphu.app.AcsynHttp.NetworkConst;
 import com.example.vuphu.app.R;
 import com.example.vuphu.app.RetrofitAPI.ApiUtils;
-
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-
-import id.zelory.compressor.Compressor;
 import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -179,46 +171,44 @@ public class AdminAddProductActivity extends AppCompatActivity {
         }
     }
     private void addProduct () {
+
         File file = new File(mediaPath);
-        File compressedImageFile = null;
+        RequestBody name = RequestBody.create(MediaType.parse("text/plain"),edt_name_product.getText().toString());
+        RequestBody price = RequestBody.create(MediaType.parse("text/plain"),edt_price.getText().toString());
+        RequestBody quantity = RequestBody.create(MediaType.parse("text/plain"),edt_quantity.getText().toString());
+        RequestBody type = RequestBody.create(MediaType.parse("text/plain"),tvtype.getText().toString());
+        RequestBody descrip = RequestBody.create(MediaType.parse("text/plain"),edt_desc.getText().toString());
 
-        try {
-            compressedImageFile = new Compressor(this).compressToFile(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        RequestBody image = RequestBody.create(MediaType.parse("image/jpeg"),file);
 
-        RequestBody name = RequestBody.create(MediaType.parse("multipart/form-data"),edt_name_product.getText().toString());
-        RequestBody price = RequestBody.create(MediaType.parse("multipart/form-data"),edt_price.getText().toString());
-        RequestBody quatity = RequestBody.create(MediaType.parse("multipart/form-data"),edt_quantity.getText().toString());
-        RequestBody description = RequestBody.create(MediaType.parse("multipart/form-data"),edt_desc.getText().toString());
-        RequestBody type = RequestBody.create(MediaType.parse("multipart/form-data"),tvtype.getText().toString());
-
-
-        MultipartBody.Builder builder = new MultipartBody.Builder()
-            .setType(MultipartBody.FORM);
-
-        RequestBody body1 = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        builder.addFormDataPart("productImage", file.getName(), body1);
-
-
-        MultipartBody requestBody = builder.build();
-
-
-        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), compressedImageFile);
-        MultipartBody.Part imageBody = MultipartBody.Part.createFormData("productImage", file.getName(), reqFile);
-
-        ApiUtils.getAPIService().upLoadProduct(
-                    "Bearer "+ pre.getString(NetworkConst.token,""),imageBody)
-                .enqueue(new Callback<Void>() {
+        ApiUtils.getAPIService().upLoadProduct(NetworkConst.token,image,name,price,quantity,descrip,type).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                Log.i("se",response+"");
+                Log.i("post",response.message());
             }
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Log.i("sf",t.getMessage());
+                Log.i("post",t.getMessage());
             }
         });
+
     }
+    /*                        @Part MultipartBody.Part body,
+                              @Part("name") RequestBody name,
+                              @Part("price") RequestBody price,
+                              @Part("quatity") RequestBody quantity,
+                              @Part("description") RequestBody des,
+                              @Part("type") RequestBody type
+
+        edt_name_product = findViewById(R.id.edt_admin_add_name_product);
+        edt_price = findViewById(R.id.edt_admin_add_product_price);
+        edt_desc = findViewById(R.id.edt_admin_add_product_content);
+        edt_quantity = findViewById(R.id.edt_admin_add_quantity_product);
+        btn_add_img =findViewById(R.id.btn_admin_add_image);
+        btn_add = findViewById(R.id.btn_admin_add_product);
+        edt_type = findViewById(R.id.spinner_add_type_product);
+        img_product = findViewById(R.id.img_admin_add_product);
+        tvtype = findViewById(R.id.tv_type);
+                              */
+
 }
