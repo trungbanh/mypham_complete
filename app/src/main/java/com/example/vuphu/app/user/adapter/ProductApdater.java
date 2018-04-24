@@ -58,8 +58,7 @@ public class ProductApdater {
         @Override
         public void onBindViewHolder(productViewHolder holder,final int position) {
             holder.tv_name.setText(list.get(position).getName());
-            Log.i("list",list.get(position).toString());
-            holder.tv_price.setText(String.valueOf(list.get(position).getPrice()));
+            holder.tv_price.setText(String.valueOf(list.get(position).getPrice())+" $");
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

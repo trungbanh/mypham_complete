@@ -8,9 +8,6 @@ public class ProductInCart {
     @SerializedName("product")
     @Expose
     private String productid;
-    @SerializedName("product")
-    @Expose
-    private String product;
     @SerializedName("quatityBuy")
     @Expose
     private Integer quatityBuy;

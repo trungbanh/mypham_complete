@@ -1,8 +1,11 @@
 package com.example.vuphu.app.RetrofitAPI;
 
+import com.example.vuphu.app.object.Payment;
 import com.example.vuphu.app.object.ProductCallback;
 import com.example.vuphu.app.object.order;
 import com.loopj.android.http.RequestParams;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.List;
@@ -29,12 +32,12 @@ public interface Api {
     @POST("/products")
     @Headers("Content-Type: application/json")
     Call<Void> upLoadProduct (@Header("Authorization") String authorization,
-                              @Part("productImage") RequestBody body,
-                              @Part("name") RequestBody name,
-                              @Part("price") RequestBody price,
+                              @Part MultipartBody.Part body,
+                              @Query("name") RequestBody name,
+                              @Query("price") RequestBody price,
                               @Part("quatity") RequestBody quantity,
-                              @Part("description") RequestBody des,
-                              @Part("type") RequestBody type
+                              @Query("description") RequestBody des,
+                              @Query("type") RequestBody type
                               );
 
 
@@ -43,6 +46,11 @@ public interface Api {
     Call<List<order>> adminGetOrder (
             @Header("Authorization") String authorization
     );
-
+    @POST("/orders")
+    @Headers("Content-Type: application/json")
+    Call<Payment> Order (
+            @Header("Authorization") String authorization,
+            @Body String list
+    );
 
 }

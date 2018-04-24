@@ -1,5 +1,6 @@
 package com.example.vuphu.app.user.cart;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,21 +12,18 @@ import android.widget.Button;
 
 import com.example.vuphu.app.AcsynHttp.AsyncHttpApi;
 import com.example.vuphu.app.AcsynHttp.NetworkConst;
+import com.example.vuphu.app.Dialog.notyfi;
 import com.example.vuphu.app.R;
-import com.example.vuphu.app.object.Payment;
-import com.example.vuphu.app.object.ProductInCart;
 import com.example.vuphu.app.user.adapter.CartAdapter;
 import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cz.msebera.android.httpclient.Header;
+
 
 public class CartList extends AppCompatActivity {
 
@@ -53,7 +51,8 @@ public class CartList extends AppCompatActivity {
     }
 
     private void init () {
-        pre =getSharedPreferences("data", MODE_PRIVATE);
+        pre = getSharedPreferences("data", MODE_PRIVATE);
+        Log.i("token",pre.getString("token",""));
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_list_product_in_cart);
         buy = findViewById(R.id.btn_buy);
     }
@@ -61,33 +60,52 @@ public class CartList extends AppCompatActivity {
         buy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                postPostOrder(Cart.getInstance().getPostJson());
+                if (postPostOrder(Cart.getInstance().getPostJson())){
+                    Cart.getInstance().resetCart();
+                    notyfi no = new notyfi(CartList.this);
+                    no.show();
+                }else  {
+                    notyfi no = new notyfi(CartList.this);
+                    no.setText("buy fail !!!");
+                    no.show();
+                }
             }
         });
     }
-    private void postPostOrder (List<ProductInCart> listBuy) {
+    private boolean postPostOrder (String list) {
+        final boolean[] temp = new boolean[1];
         RequestParams params = new RequestParams();
-        params.put("products",listBuy);
-        AsyncHttpApi.post(pre.getString(NetworkConst.token,""),"/orders",params,new JsonHttpResponseHandler(){
+
+        try {
+            JSONObject object = new JSONObject(list);
+            params.put("products", object);
+            Log.i("list pa",params.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        AsyncHttpApi.post(pre.getString("token",""),"/orders",params,new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Log.i("post product",response.toString());
-                Gson gson = new Gson();
-                Payment pay = gson.fromJson(response.toString(),Payment.class);
-                payment(pay.getCreatedOrder().getId());
+                temp[0] = true;
             }
+
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
-                Log.i("post product",errorResponse.toString());
+                Log.i("list",errorResponse.toString());
             }
         });
+
+        return temp[0];
     }
     private void payment (String idOrder) {
         RequestParams params = new RequestParams();
         params.put("_id", idOrder);
-        AsyncHttpApi.post(pre.getString(NetworkConst.token,""),"/payment",params,new JsonHttpResponseHandler() {
+        AsyncHttpApi.post(pre.getString(NetworkConst.token,""),"/payment",
+                params,new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);

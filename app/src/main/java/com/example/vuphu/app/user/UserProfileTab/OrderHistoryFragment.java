@@ -82,7 +82,7 @@ public class OrderHistoryFragment extends Fragment {
                 if (order.getHistoryOrder().size() == 0){
                 } else {
                     list = order.getHistoryOrder();
-                    Log.i("listHis",list.get(0).getProduct());
+                    Log.i("listHis",list.get(0).getId());
                     list_order.setLayoutManager(gridLayoutManager);
                     list_order.setHasFixedSize(true);
                     list_order.setNestedScrollingEnabled(true);

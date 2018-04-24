@@ -1,10 +1,15 @@
 package com.example.vuphu.app.user.cart;
 
+import android.util.Log;
+
 import com.example.vuphu.app.object.ProductInCart;
 import com.example.vuphu.app.object.ProductShow;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Cart {
     private ArrayList<ProductInCart> productBuys ;
@@ -38,10 +43,21 @@ public class Cart {
         return  arrayList;
     }
 
-    public List<ProductInCart> getPostJson () {
-        return productBuys;
+    public String getPostJson () {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        //Log.i("log ",gson.toJson(productBuys.toArray()));
+        String a = gson.toJson(productBuys.toArray());
+
+        //a = a.replace('\"',' ');
+        Log.i("log ",a);
+        return a;
 
     }
+    public Cart resetCart () {
+        return Instance = new Cart();
+    }
+
 /*{
 	"products": [
 		{

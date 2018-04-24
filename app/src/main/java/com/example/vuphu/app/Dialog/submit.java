@@ -25,8 +25,6 @@ public class submit {
 
     public submit(Activity context) {
         this.context = context;
-
-
     }
 
     public void setText(String text) {

@@ -28,8 +28,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     }
     @Override
     public void onBindViewHolder(@NonNull CartAdapter.ViewHolder holder, int position) {
-        holder.name.setText(productInCarts.get(position).getName());
-        holder.number.setText(String.valueOf(productInCarts.get(position).getQuatity()));
+        holder.name.setText("name: "+productInCarts.get(position).getName());
+        holder.number.setText("quantity: "+String.valueOf(productInCarts.get(position).getQuatity()));
     }
     @Override
     public int getItemCount() {

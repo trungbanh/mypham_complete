@@ -33,6 +33,7 @@ import com.example.vuphu.app.R;
 import com.example.vuphu.app.RetrofitAPI.ApiUtils;
 import java.io.File;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -179,9 +180,10 @@ public class AdminAddProductActivity extends AppCompatActivity {
         RequestBody type = RequestBody.create(MediaType.parse("text/plain"),tvtype.getText().toString());
         RequestBody descrip = RequestBody.create(MediaType.parse("text/plain"),edt_desc.getText().toString());
 
-        RequestBody image = RequestBody.create(MediaType.parse("image/jpeg"),file);
+        RequestBody image = RequestBody.create(MediaType.parse("image/*"),file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("productImage", file.getName(), image);
 
-        ApiUtils.getAPIService().upLoadProduct(NetworkConst.token,image,name,price,quantity,descrip,type).enqueue(new Callback<Void>() {
+        ApiUtils.getAPIService().upLoadProduct(NetworkConst.token,body,name,price,quantity,descrip,type).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 Log.i("post",response.message());
@@ -191,24 +193,7 @@ public class AdminAddProductActivity extends AppCompatActivity {
                 Log.i("post",t.getMessage());
             }
         });
+        Log.i("body ",body.toString());
 
     }
-    /*                        @Part MultipartBody.Part body,
-                              @Part("name") RequestBody name,
-                              @Part("price") RequestBody price,
-                              @Part("quatity") RequestBody quantity,
-                              @Part("description") RequestBody des,
-                              @Part("type") RequestBody type
-
-        edt_name_product = findViewById(R.id.edt_admin_add_name_product);
-        edt_price = findViewById(R.id.edt_admin_add_product_price);
-        edt_desc = findViewById(R.id.edt_admin_add_product_content);
-        edt_quantity = findViewById(R.id.edt_admin_add_quantity_product);
-        btn_add_img =findViewById(R.id.btn_admin_add_image);
-        btn_add = findViewById(R.id.btn_admin_add_product);
-        edt_type = findViewById(R.id.spinner_add_type_product);
-        img_product = findViewById(R.id.img_admin_add_product);
-        tvtype = findViewById(R.id.tv_type);
-                              */
-
 }

@@ -35,7 +35,7 @@ class UserOrdersAdapter {
         }
 
         override fun onBindViewHolder(holder: orderViewHolder, position: Int) {
-            holder.tv_name.text = list[position].product
+            holder.tv_name.text = list[position].id
             holder.tv_price.text = list[position].paid!!.toString()
             holder.tv_date.text = list[position].createAt.toString()
             //holder.tv_status.setText(list[position].getStatus());

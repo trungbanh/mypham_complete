@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import android.widget.EditText
 import android.widget.Toast
 
 import com.example.vuphu.app.AcsynHttp.AsyncHttpApi
+import com.example.vuphu.app.Dialog.notyfi
 import com.example.vuphu.app.R
 import com.loopj.android.http.JsonHttpResponseHandler
 import com.loopj.android.http.RequestParams
@@ -45,7 +47,14 @@ class AddMoneyFragment : Fragment() {
 
         pre = activity!!.getSharedPreferences("data", Context.MODE_PRIVATE)
 
-        addmoney!!.setOnClickListener { addCast(pre!!.getString("token", ""), numbercard!!.text.toString()) }
+        addmoney!!.setOnClickListener {
+            if (TextUtils.isEmpty(numbercard?.text.toString())) {
+                numbercard?.error= "cant be empty"
+            } else {
+                addCast(pre!!.getString("token", ""), numbercard!!.text.toString())
+            }
+
+        }
         return view
     }
 
@@ -55,14 +64,14 @@ class AddMoneyFragment : Fragment() {
 
         AsyncHttpApi.post(token, "/account/deposit", params, object : JsonHttpResponseHandler() {
             override fun onSuccess(statusCode: Int, headers: Array<Header>?, response: JSONObject?) {
-                Toast.makeText(activity, response!!.toString(), Toast.LENGTH_SHORT).show()
+                val no = notyfi(activity)
+                no.setText("deposit done !")
+                no.setIcon(R.drawable.ic_add_money)
+                no.show();
             }
         })
     }
-
     companion object {
-
-
         fun newInstance(): AddMoneyFragment {
             val fragment = AddMoneyFragment()
             val args = Bundle()

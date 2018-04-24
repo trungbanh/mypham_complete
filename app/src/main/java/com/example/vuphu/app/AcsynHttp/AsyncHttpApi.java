@@ -26,6 +26,7 @@ public class AsyncHttpApi {
         client.post(getAbsoluteUrl(url), params, responseHandler);
     }
 
+
     public static void post_signUp(String url, RequestParams params, JsonHttpResponseHandler responseHandler) {
         client.post(getAbsoluteUrl(url), params, responseHandler);
     }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.vuphu.app.AcsynHttp.AsyncHttpApi;
+import com.example.vuphu.app.Dialog.notyfi;
 import com.example.vuphu.app.R;
 import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -70,9 +72,19 @@ public class UserInfoFragment extends Fragment {
         put.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(TextUtils.isEmpty(name.getText().toString())) {
+                    name.setError("please fill you name before submit");
+                    return;
+                }
+                if(TextUtils.isEmpty(phone.getText().toString())) {
+                    phone.setError("please fill you phone number before submit");
+                    return;
+                }
+                if(TextUtils.isEmpty(addrss.getText().toString())) {
+                    addrss.setError("please fill you address before submit");
+                    return;
+                }
                 upDateInfo(pre.getString("token",""));
-                Toast.makeText(getActivity(), "update complete!!!", Toast.LENGTH_SHORT).show();
-
             }
         });
     }
@@ -84,11 +96,12 @@ public class UserInfoFragment extends Fragment {
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
 
-                Log.i("error_put",response.toString());
                 Gson gson = new Gson();
                 String mes = gson.fromJson(response.toString(),String.class);
                 if (mes.equals("User updated!")) {
-
+                    notyfi no =new notyfi(getActivity());
+                    no.setText("update info complete !");
+                    no.show();
                 }
             }
 
@@ -96,6 +109,10 @@ public class UserInfoFragment extends Fragment {
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
                 Log.e("error_put",throwable.getMessage());
+                notyfi no =new notyfi(getActivity());
+                no.setText("update fail !");
+                no.setIcon(R.drawable.ic_delete);
+                no.show();
             }
         });
     }

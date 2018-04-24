@@ -56,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (!pre.getString(NetworkConst.token,"").isEmpty() &&
                 !pre.getString("type_user","").isEmpty()){
-            notyfi no = new notyfi(this);
+            notyfi no = new notyfi(LoginActivity.this);
             no.show();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
@@ -78,25 +78,27 @@ public class LoginActivity extends AppCompatActivity {
         emailInput = findViewById(R.id.edt_email);
         passInput = findViewById(R.id.edt_pass);
         login = findViewById(R.id.btn_signin);
-        progressBar = new ProgressDialog(this);
+        progressBar = new ProgressDialog(LoginActivity.this);
     }
     private void Pre_process (){
         progressBar.setMessage("Đang xử lí...");
         mail = intent.getStringExtra("email");
         pass = intent.getStringExtra("pass");
         emailInput.setText(mail);
-        if(TextUtils.isEmpty(emailInput.getText().toString())) {
-            emailInput.setError("cant be empty");
-        }
-        if (emailInput.getText().toString().compareTo("@gmail.com")!= 0){
-            emailInput.setError("input must be mail");
-        }
+
         passInput.setText(pass);
-        if(TextUtils.isEmpty(passInput.getText().toString())) {
-            passInput.setError("cant be empty");
-        }
+
     }
     public void signIn (String mail,String pass){
+
+        if(TextUtils.isEmpty(emailInput.getText().toString())) {
+            emailInput.setError("cant be empty");
+            return;
+        }
+        if(TextUtils.isEmpty(passInput.getText().toString())) {
+            passInput.setError("cant be empty");
+            return;
+        }
 
         RequestParams params = new RequestParams();
         params.put("email",mail);
