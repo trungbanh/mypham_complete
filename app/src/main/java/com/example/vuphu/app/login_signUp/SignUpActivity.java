@@ -1,8 +1,6 @@
 package com.example.vuphu.app.login_signUp;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -61,22 +59,41 @@ public class SignUpActivity extends AppCompatActivity {
 
     private boolean postResquest(RequestParams params) {
         final boolean[] result = new boolean[1];
-
         AsyncHttpApi.post_signUp("/user/signup",params,new JsonHttpResponseHandler() {
+
+            notyfi no = new notyfi(SignUpActivity.this);
+
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 String json = response.toString();
                 Gson gson = new Gson();
                 token = gson.fromJson(json, SignUpToken.class);
                 result[0] = true;
+                Log.i("sigup",result[0]+"");
+
+                no.show();
+                Toast.makeText(SignUpActivity.this, "signup sucess", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                intent.putExtra("mail",emailText);
+                intent.putExtra("pass",passText);
+
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                startActivity(intent);
+
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
                 result[0] = false ;
+                Log.i("sigup",result[0]+"");
+                no.setText("signup fail !!!");
+                no.setIcon(R.drawable.ic_delete);
+                no.show();
             }
         });
+        Log.i("sigup sum",result[0]+"");
         return result[0];
     }
 
@@ -93,24 +110,6 @@ public class SignUpActivity extends AppCompatActivity {
     }
     public void signUp(View view) {
         getText();
-        notyfi no = new notyfi(this);
-        if (postResquest(getRequest())){
-
-            no.show();
-            Toast.makeText(SignUpActivity.this, "signup sucess", Toast.LENGTH_SHORT).show();
-
-            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-            intent.putExtra("mail",emailText);
-            intent.putExtra("pass",passText);
-
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            startActivity(intent);
-        }else {
-            no.setText("signup fail !!!");
-            no.setIcon(R.drawable.ic_delete);
-            no.show();
-            Toast.makeText(SignUpActivity.this, "signup fail", Toast.LENGTH_SHORT).show();
-        }
-
+        postResquest(getRequest());
     }
 }

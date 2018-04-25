@@ -5,9 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -15,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,17 +24,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.vuphu.app.AcsynHttp.AsyncHttpApi;
-import com.example.vuphu.app.AcsynHttp.NetworkConst;
 import com.example.vuphu.app.R;
-import com.example.vuphu.app.RetrofitAPI.ApiUtils;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
+
 import java.io.File;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.net.URISyntaxException;
 
 public class AdminAddProductActivity extends AppCompatActivity {
 
@@ -60,11 +53,13 @@ public class AdminAddProductActivity extends AppCompatActivity {
     private SharedPreferences pre;
     protected   Uri uri;
     private ProgressDialog progressBar;
+
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_add_product);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.admin_add_product_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -98,6 +93,9 @@ public class AdminAddProductActivity extends AppCompatActivity {
         img_product = findViewById(R.id.img_admin_add_product);
         tvtype = findViewById(R.id.tv_type);
     }
+
+
+
 
     private void setDataType() {
 
@@ -174,7 +172,27 @@ public class AdminAddProductActivity extends AppCompatActivity {
     private void addProduct () {
 
         File file = new File(mediaPath);
-        RequestBody name = RequestBody.create(MediaType.parse("text/plain"),edt_name_product.getText().toString());
+/*
+        RequestParams params = new RequestParams();
+        try {
+            params.put("productImage",file);
+        } catch(FileNotFoundException e) {}
+
+        AsyncHttpApi.post_admin_product(pre.getString("token",""),"/products",params,new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Log.i("error", errorResponse.toString());
+            }
+        });
+*/
+        //form-data
+        /*RequestBody name = RequestBody.create(MediaType.parse("text/plain"),edt_name_product.getText().toString());
         RequestBody price = RequestBody.create(MediaType.parse("text/plain"),edt_price.getText().toString());
         RequestBody quantity = RequestBody.create(MediaType.parse("text/plain"),edt_quantity.getText().toString());
         RequestBody type = RequestBody.create(MediaType.parse("text/plain"),tvtype.getText().toString());
@@ -183,17 +201,20 @@ public class AdminAddProductActivity extends AppCompatActivity {
         RequestBody image = RequestBody.create(MediaType.parse("image/*"),file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("productImage", file.getName(), image);
 
-        ApiUtils.getAPIService().upLoadProduct(NetworkConst.token,body,name,price,quantity,descrip,type).enqueue(new Callback<Void>() {
+        ApiUtils.getAPIService().upLoadProduct(NetworkConst.token,body,name,price,quantity,descrip,type).enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Log.i("post",response.message());
             }
+
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.i("post",t.getMessage());
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
             }
-        });
-        Log.i("body ",body.toString());
+
+
+        });*/
+        //Log.i("body ",body.toString());
 
     }
 }

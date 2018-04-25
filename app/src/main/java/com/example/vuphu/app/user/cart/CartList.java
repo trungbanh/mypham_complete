@@ -14,6 +14,8 @@ import com.example.vuphu.app.AcsynHttp.AsyncHttpApi;
 import com.example.vuphu.app.AcsynHttp.NetworkConst;
 import com.example.vuphu.app.Dialog.notyfi;
 import com.example.vuphu.app.R;
+import com.example.vuphu.app.object.Payment;
+import com.example.vuphu.app.object.listOrder;
 import com.example.vuphu.app.user.adapter.CartAdapter;
 import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -60,44 +62,54 @@ public class CartList extends AppCompatActivity {
         buy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (postPostOrder(Cart.getInstance().getPostJson())){
-                    Cart.getInstance().resetCart();
-                    notyfi no = new notyfi(CartList.this);
-                    no.show();
-                }else  {
-                    notyfi no = new notyfi(CartList.this);
-                    no.setText("buy fail !!!");
-                    no.show();
-                }
+                postPostOrder(Cart.getInstance().getPostJson());
             }
         });
     }
     private boolean postPostOrder (String list) {
         final boolean[] temp = new boolean[1];
-        RequestParams params = new RequestParams();
+        if (!list.equals("[]")) {
+            RequestParams params = new RequestParams();
 
-        try {
-            JSONObject object = new JSONObject(list);
-            params.put("products", object);
-            Log.i("list pa",params.toString());
+            try {
+                JSONObject object = new JSONObject(list);
+                params.put("products", object);
+                Log.i("list pa", params.toString());
 
-        } catch (JSONException e) {
-            e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            AsyncHttpApi.post(pre.getString("token", ""), "/orders", params, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    super.onSuccess(statusCode, headers, response);
+                    temp[0] = true;
+                    Gson gson = new Gson();
+                    Payment payment = gson.fromJson(response.toString(), Payment.class);
+                    payment(payment.getCreatedOrder().getId());
+
+                    Cart.getInstance().resetCart();
+                    mAdapter.notifyDataSetChanged();
+                    mRecyclerView.setAdapter(mAdapter);
+                    notyfi no = new notyfi(CartList.this);
+                    no.show();
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                    Log.i("list", errorResponse.toString());
+                    notyfi no = new notyfi(CartList.this);
+                    no.setText("buy fail !!!");
+                    no.show();
+                }
+            });
+        } else {
+            notyfi no = new notyfi(CartList.this);
+            no.setText("you have not thing to buy !!!");
+            no.show();
         }
-
-        AsyncHttpApi.post(pre.getString("token",""),"/orders",params,new JsonHttpResponseHandler(){
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-                temp[0] = true;
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-                Log.i("list",errorResponse.toString());
-            }
-        });
 
         return temp[0];
     }

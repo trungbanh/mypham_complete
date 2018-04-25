@@ -74,10 +74,10 @@ public class AdminOrdersFragment extends Fragment {
                 List<order> jArray = response.body();
                 if (response.isSuccessful()) {
                     if (jArray.size()==0){
-                        Toast.makeText(getActivity(),"you dont have any product",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(),"you dont have any order",Toast.LENGTH_LONG).show();
 
                     }else {
-                        for (int i = 0; i <= jArray.size(); i++) {
+                        for (int i = 0; i < jArray.size(); i++) {
                             list.add(jArray.get(i));
                             Log.i("order", jArray.get(i).toString());
                         }

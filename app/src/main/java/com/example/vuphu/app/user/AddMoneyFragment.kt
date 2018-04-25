@@ -51,7 +51,7 @@ class AddMoneyFragment : Fragment() {
             if (TextUtils.isEmpty(numbercard?.text.toString())) {
                 numbercard?.error= "cant be empty"
             } else {
-                addCast(pre!!.getString("token", ""), numbercard!!.text.toString())
+                addCast(pre!!.getString("token", ""), numbercard?.text.toString())
             }
 
         }
@@ -60,7 +60,7 @@ class AddMoneyFragment : Fragment() {
 
     private fun addCast(token: String?, num: String) {
         val params = RequestParams()
-        params.put("balance", Integer.parseInt(num))
+        params.put("balance",num.toInt())
 
         AsyncHttpApi.post(token, "/account/deposit", params, object : JsonHttpResponseHandler() {
             override fun onSuccess(statusCode: Int, headers: Array<Header>?, response: JSONObject?) {
@@ -82,4 +82,4 @@ class AddMoneyFragment : Fragment() {
     }
 
 
-}// Required empty public constructor
+}

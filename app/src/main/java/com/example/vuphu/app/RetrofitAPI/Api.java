@@ -31,13 +31,13 @@ public interface Api {
     @Multipart
     @POST("/products")
     @Headers("Content-Type: application/json")
-    Call<Void> upLoadProduct (@Header("Authorization") String authorization,
+    Call<ResponseBody> upLoadProduct (@Header("Authorization") String authorization,
                               @Part MultipartBody.Part body,
-                              @Query("name") RequestBody name,
-                              @Query("price") RequestBody price,
+                              @Part("name") RequestBody name,
+                              @Part("price") RequestBody price,
                               @Part("quatity") RequestBody quantity,
-                              @Query("description") RequestBody des,
-                              @Query("type") RequestBody type
+                              @Part("description") RequestBody des,
+                              @Part("type") RequestBody type
                               );
 
 
