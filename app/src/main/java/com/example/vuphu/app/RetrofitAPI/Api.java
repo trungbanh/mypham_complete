@@ -51,7 +51,7 @@ public interface Api {
     @Headers("Content-Type: application/json")
     Call<Payment> Order (
             @Header("Authorization") String authorization,
-            @Body RequestBody list
+            @Body String list
     );
 
 }

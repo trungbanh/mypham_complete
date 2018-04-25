@@ -17,6 +17,7 @@ import com.example.vuphu.app.Dialog.notyfi;
 import com.example.vuphu.app.R;
 import com.example.vuphu.app.RetrofitAPI.ApiUtils;
 import com.example.vuphu.app.object.Payment;
+import com.example.vuphu.app.object.ProductInCart;
 import com.example.vuphu.app.object.listOrder;
 import com.example.vuphu.app.user.adapter.CartAdapter;
 import com.google.gson.Gson;
@@ -28,6 +29,8 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import okhttp3.MediaType;
@@ -82,11 +85,26 @@ public class CartList extends AppCompatActivity {
 
         Log.i("json",Cart.getInstance().getPostJson());
 
+        /*ApiUtils.getAPIService().Order(pre.getString(NetworkConst.token,""),Cart.getInstance().getPostJson()).enqueue(new Callback<Payment>() {
+            @Override
+            public void onResponse(Call<Payment> call, Response<Payment> response) {
+                if (response.isSuccessful()){
+                    Toast.makeText(CartList.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Payment> call, Throwable t) {
+
+            }
+        });*/
+
+
         try {
-            JSONObject jsnobject = new JSONObject(Cart.getInstance().getPostJson());
+            //JSONObject jsnobject = new JSONObject(Cart.getInstance().getPostJson());
 
             RequestParams params = new RequestParams();
-            params.put("",Cart.getInstance().getPostJson());
+            params.put("products",Cart.getInstance().getPostJson());
 
 
             AsyncHttpApi.post(pre.getString("token", ""), "/orders", params, new JsonHttpResponseHandler() {
@@ -118,6 +136,7 @@ public class CartList extends AppCompatActivity {
         } catch (Throwable tx) {
             Log.e("My App", "Could not parse malformed JSON: \"" + Cart.getInstance().getPostJson() + "\"");
         }
+
     }
     private void payment (String idOrder) {
         RequestParams params = new RequestParams();

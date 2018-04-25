@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,13 +25,26 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.vuphu.app.AcsynHttp.NetworkConst;
 import com.example.vuphu.app.R;
+import com.example.vuphu.app.RetrofitAPI.ApiUtils;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
+import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 
 import java.io.File;
 import java.net.URISyntaxException;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AdminAddProductActivity extends AppCompatActivity {
 
@@ -171,50 +185,20 @@ public class AdminAddProductActivity extends AppCompatActivity {
     }
     private void addProduct () {
 
-        File file = new File(mediaPath);
-/*
-        RequestParams params = new RequestParams();
-        try {
-            params.put("productImage",file);
-        } catch(FileNotFoundException e) {}
+        Ion.with(getApplicationContext())
+                .load("http://192.168.43.198:3000/products")
+                .setMultipartParameter("price",edt_price.getText().toString() )
+                .setMultipartParameter("quatity", edt_quantity.getText().toString())
+                .setMultipartParameter("description", edt_desc.getText().toString())
+                .setMultipartParameter("name", edt_name_product.getText().toString())
+                .setMultipartParameter("type", tvtype.getText().toString())
+                .setMultipartFile("productImage", "application/*", new File(mediaPath))
+                .asJsonObject()
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
 
-        AsyncHttpApi.post_admin_product(pre.getString("token",""),"/products",params,new JsonHttpResponseHandler(){
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-                Log.i("error", errorResponse.toString());
-            }
-        });
-*/
-        //form-data
-        /*RequestBody name = RequestBody.create(MediaType.parse("text/plain"),edt_name_product.getText().toString());
-        RequestBody price = RequestBody.create(MediaType.parse("text/plain"),edt_price.getText().toString());
-        RequestBody quantity = RequestBody.create(MediaType.parse("text/plain"),edt_quantity.getText().toString());
-        RequestBody type = RequestBody.create(MediaType.parse("text/plain"),tvtype.getText().toString());
-        RequestBody descrip = RequestBody.create(MediaType.parse("text/plain"),edt_desc.getText().toString());
-
-        RequestBody image = RequestBody.create(MediaType.parse("image/*"),file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("productImage", file.getName(), image);
-
-        ApiUtils.getAPIService().upLoadProduct(NetworkConst.token,body,name,price,quantity,descrip,type).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Log.i("post",response.message());
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-            }
-
-
-        });*/
-        //Log.i("body ",body.toString());
-
+                    }
+                });
     }
 }

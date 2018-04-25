@@ -51,7 +51,7 @@ public class Cart {
         Log.i("log ",gson.toJson(productBuys));
         String array = gson.toJson(productBuys);
 
-        array =  "{ \"products:\" :"+array+"}";
+        //array =  "{ \"products\" :"+array+"}";
 
 
         return array;
