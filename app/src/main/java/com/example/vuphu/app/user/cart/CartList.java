@@ -9,22 +9,34 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.vuphu.app.AcsynHttp.AsyncHttpApi;
 import com.example.vuphu.app.AcsynHttp.NetworkConst;
 import com.example.vuphu.app.Dialog.notyfi;
 import com.example.vuphu.app.R;
+import com.example.vuphu.app.RetrofitAPI.ApiUtils;
 import com.example.vuphu.app.object.Payment;
 import com.example.vuphu.app.object.listOrder;
 import com.example.vuphu.app.user.adapter.CartAdapter;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static okhttp3.MediaType.parse;
 
 
 public class CartList extends AppCompatActivity {
@@ -62,32 +74,28 @@ public class CartList extends AppCompatActivity {
         buy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                postPostOrder(Cart.getInstance().getPostJson());
+                postPostOrder();
             }
         });
     }
-    private boolean postPostOrder (String list) {
-        final boolean[] temp = new boolean[1];
-        if (!list.equals("[]")) {
+    private void postPostOrder () {
+
+        Log.i("json",Cart.getInstance().getPostJson());
+
+        try {
+            JSONObject jsnobject = new JSONObject(Cart.getInstance().getPostJson());
+
             RequestParams params = new RequestParams();
+            params.put("",Cart.getInstance().getPostJson());
 
-            try {
-                JSONObject object = new JSONObject(list);
-                params.put("products", object);
-                Log.i("list pa", params.toString());
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
 
             AsyncHttpApi.post(pre.getString("token", ""), "/orders", params, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
-                    temp[0] = true;
                     Gson gson = new Gson();
                     Payment payment = gson.fromJson(response.toString(), Payment.class);
-                    payment(payment.getCreatedOrder().getId());
+                    Log.i("payment",payment.getCreatedOrder().getId());
 
                     Cart.getInstance().resetCart();
                     mAdapter.notifyDataSetChanged();
@@ -105,13 +113,11 @@ public class CartList extends AppCompatActivity {
                     no.show();
                 }
             });
-        } else {
-            notyfi no = new notyfi(CartList.this);
-            no.setText("you have not thing to buy !!!");
-            no.show();
-        }
 
-        return temp[0];
+
+        } catch (Throwable tx) {
+            Log.e("My App", "Could not parse malformed JSON: \"" + Cart.getInstance().getPostJson() + "\"");
+        }
     }
     private void payment (String idOrder) {
         RequestParams params = new RequestParams();

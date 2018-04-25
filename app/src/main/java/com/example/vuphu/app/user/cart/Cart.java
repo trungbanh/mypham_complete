@@ -6,8 +6,10 @@ import com.example.vuphu.app.object.ProductInCart;
 import com.example.vuphu.app.object.ProductShow;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -46,12 +48,13 @@ public class Cart {
     public String getPostJson () {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
-        //Log.i("log ",gson.toJson(productBuys.toArray()));
-        String a = gson.toJson(productBuys.toArray());
+        Log.i("log ",gson.toJson(productBuys));
+        String array = gson.toJson(productBuys);
 
-        //a = a.replace('\"',' ');
-        Log.i("log ",a);
-        return a;
+        array =  "{ \"products:\" :"+array+"}";
+
+
+        return array;
 
     }
     public Cart resetCart () {

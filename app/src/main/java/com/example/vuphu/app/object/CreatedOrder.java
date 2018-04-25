@@ -31,12 +31,4 @@ public class CreatedOrder {
         this.ownerUid = ownerUid;
     }
 
-    public String getProduct() {
-        return product;
-    }
-
-    public void setProduct(String product) {
-        this.product = product;
-    }
-
 }

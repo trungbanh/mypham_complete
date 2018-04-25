@@ -3,6 +3,7 @@ package com.example.vuphu.app.RetrofitAPI;
 import com.example.vuphu.app.object.Payment;
 import com.example.vuphu.app.object.ProductCallback;
 import com.example.vuphu.app.object.order;
+import com.google.gson.JsonObject;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
@@ -50,7 +51,7 @@ public interface Api {
     @Headers("Content-Type: application/json")
     Call<Payment> Order (
             @Header("Authorization") String authorization,
-            @Body String list
+            @Body RequestBody list
     );
 
 }
