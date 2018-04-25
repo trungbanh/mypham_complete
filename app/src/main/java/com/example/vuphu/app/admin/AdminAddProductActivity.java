@@ -107,10 +107,6 @@ public class AdminAddProductActivity extends AppCompatActivity {
         img_product = findViewById(R.id.img_admin_add_product);
         tvtype = findViewById(R.id.tv_type);
     }
-
-
-
-
     private void setDataType() {
 
         if(TextUtils.isEmpty(edt_name_product.getText().toString())) {
