@@ -109,52 +109,22 @@ public class LoginActivity extends AppCompatActivity {
     public void signIn(String mail, String pass) {
 
         if (TextUtils.isEmpty(emailInput.getText().toString())) {
-            emailInput.setError("cant be empty");
-        } else if (TextUtils.isEmpty(passInput.getText().toString())) {
-            passInput.setError("cant be empty");
-        } else {
+            emailInput.setError("cant be empty"); } else if (TextUtils.isEmpty(passInput.getText().toString())) {
+            passInput.setError("cant be empty"); } else {
             RequestParams params = new RequestParams();
             params.put("email", mail);
             params.put("password", pass);
-            if (!postSignIn(params).isEmpty()) {
-                if (mail.equals("admin@admin.com")) {
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                    edit.putString("type_user", "admin");
-                    edit.commit();
-                    if (!pre.getString(NetworkConst.token, "").isEmpty() &&
-                            !pre.getString("type_user", "").isEmpty()) {
-                        notyfi no = new notyfi(LoginActivity.this);
-                        no.show();
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                    }
-                    progressBar.hide();
-                    finish();
-                } else {
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                    edit.putString("type_user", "user");
-                    edit.commit();
-                    if (!pre.getString(NetworkConst.token, "").isEmpty() &&
-                            !pre.getString("type_user", "").isEmpty()) {
-                        notyfi no = new notyfi(LoginActivity.this);
-                        no.show();
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                    }
-                    progressBar.hide();
-                    finish();
-                }
-            }
+            postSignIn(params,mail,pass);
+
         }
     }
-
     public void signUp(View view) {
         startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
     }
-
-    private String postSignIn(RequestParams params) {
+    private String postSignIn(RequestParams params,String mail ,String pass) {
         AsyncHttpApi.post_logIn("/user/login", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-
                 String json = response.toString();
                 Gson gson = new Gson();
                 token = gson.fromJson(json, SignUpToken.class);
@@ -168,7 +138,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 edit.commit();
             }
-
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Log.e("error", throwable.getMessage());
@@ -176,6 +145,26 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         String token = pre.getString(NetworkConst.token, "");
+        if (mail.equals("admin@admin.com")) {
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            edit.putString("type_user", "admin");
+            edit.commit();
+            if (!pre.getString(NetworkConst.token, "").isEmpty() &&
+                    !pre.getString("type_user", "").isEmpty()) {
+                notyfi no = new notyfi(LoginActivity.this);
+                no.show();
+                startActivity(new Intent(getApplicationContext(), MainActivity.class)); }progressBar.hide();
+            finish(); } else {
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            edit.putString("type_user", "user");
+            edit.commit();
+            if (!pre.getString(NetworkConst.token, "").isEmpty() &&
+                    !pre.getString("type_user", "").isEmpty()) {
+                notyfi no = new notyfi(LoginActivity.this);
+                no.show();
+                startActivity(new Intent(getApplicationContext(), MainActivity.class)); }progressBar.hide();
+            finish();
+        }
         return token;
     }
 }
