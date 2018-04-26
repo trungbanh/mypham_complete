@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -56,6 +57,10 @@ public class CartList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart_list);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarcart);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle("List product in cart");
+
         init();
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
@@ -85,21 +90,6 @@ public class CartList extends AppCompatActivity {
 
         Log.i("json",Cart.getInstance().getPostJson());
 
-        /*ApiUtils.getAPIService().Order(pre.getString(NetworkConst.token,""),Cart.getInstance().getPostJson()).enqueue(new Callback<Payment>() {
-            @Override
-            public void onResponse(Call<Payment> call, Response<Payment> response) {
-                if (response.isSuccessful()){
-                    Toast.makeText(CartList.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Payment> call, Throwable t) {
-
-            }
-        });*/
-
-
         try {
             //JSONObject jsnobject = new JSONObject(Cart.getInstance().getPostJson());
 
@@ -115,7 +105,10 @@ public class CartList extends AppCompatActivity {
                     Payment payment = gson.fromJson(response.toString(), Payment.class);
                     Log.i("payment",payment.getCreatedOrder().getId());
 
-                    Cart.getInstance().resetCart();
+                    payment (payment.getCreatedOrder().getId());
+
+
+                        Cart.getInstance().resetCart();
                     mAdapter.notifyDataSetChanged();
                     mRecyclerView.setAdapter(mAdapter);
                     notyfi no = new notyfi(CartList.this);

@@ -77,6 +77,24 @@
 
                 </Spinner>
                 </LinearLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:text="10"
+                        android:hint="@string/quatity"
+                        android:inputType="numberDecimal"
+                        android:id="@+id/edt_admin_price_product"
+                        android:textColor="@android:color/black"
+                        android:fontFamily="sans-serif"
+                        android:textSize="20sp"/>
+                </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"

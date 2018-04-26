@@ -53,16 +53,9 @@ public class LoginActivity extends AppCompatActivity {
         intent = getIntent() ;
         init();
         Pre_process ();
-
-        if (!pre.getString(NetworkConst.token,"").isEmpty() &&
-                !pre.getString("type_user","").isEmpty()){
-            notyfi no = new notyfi(LoginActivity.this);
-            no.show();
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-
-            finish();
-        }
         SiginClick ();
+
+
     }
     private void SiginClick (){
         login.setOnClickListener(new View.OnClickListener() {
@@ -117,10 +110,16 @@ public class LoginActivity extends AppCompatActivity {
                 progressBar.hide();
                 finish();
             }
-        } else {
-            progressBar.hide();
-            Toast.makeText(this, "incorrect email or password", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(this, "incorect password", Toast.LENGTH_SHORT).show();
         }
+        if (!pre.getString(NetworkConst.token,"").isEmpty() &&
+                !pre.getString("type_user","").isEmpty()){
+            notyfi no = new notyfi(LoginActivity.this);
+            no.show();
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        }
+
     }
     public void signUp(View view) {
         startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
@@ -146,6 +145,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Log.e("error",throwable.getMessage());
+                Toast.makeText(LoginActivity.this, "incorrect email or password", Toast.LENGTH_SHORT).show();
             }
         });
         String token = pre.getString(NetworkConst.token,"");

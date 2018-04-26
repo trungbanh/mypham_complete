@@ -59,7 +59,7 @@ public class AdminEditProductActivity extends AppCompatActivity {
 
 
 
-    private EditText edt_name_product, edt_desc, edt_quantity;
+    private EditText edt_name_product, edt_desc, edt_quantity ,edt_price;
     private TextView select ;
     private Spinner type_product;
     private ImageView img_product;
@@ -94,6 +94,7 @@ public class AdminEditProductActivity extends AppCompatActivity {
         product = new Product();
         if (intent!=null) {
             product.setId(intent.getStringExtra("productID"));
+            product.setDescription(intent.getStringExtra("productPRICE"));
             product.setName(intent.getStringExtra("productNAME"));
             product.setQuatity(intent.getIntExtra("productQUATITY",0));
             product.setDescription(intent.getStringExtra("productDES"));
@@ -118,6 +119,7 @@ public class AdminEditProductActivity extends AppCompatActivity {
         type_product = findViewById(R.id.spinner_type_product);
         img_product = findViewById(R.id.img_admin_edit_product);
         btn_update = findViewById(R.id.btn_admin_edit_product);
+        edt_price = findViewById(R.id.edt_admin_price_product);
         select = findViewById(R.id.tv_select);
         listType = new ArrayAdapter<>(this.getApplicationContext(),android.R.layout.simple_spinner_item,arr);
         listType.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
@@ -174,7 +176,7 @@ public class AdminEditProductActivity extends AppCompatActivity {
         RequestParams params = new RequestParams();
         params.put("name",edt_name_product.getText().toString());
         params.put("quatity",edt_quantity.getText().toString());
-        //params.put("price",edt_price.getText().toString());
+        params.put("price",edt_price.getText().toString());
         params.put("description",edt_desc.getText().toString());
         params.put("type",select.getText().toString());
 

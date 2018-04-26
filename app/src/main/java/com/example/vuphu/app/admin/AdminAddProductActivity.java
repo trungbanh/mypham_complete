@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.vuphu.app.AcsynHttp.NetworkConst;
+import com.example.vuphu.app.Dialog.notyfi;
 import com.example.vuphu.app.R;
 import com.example.vuphu.app.RetrofitAPI.ApiUtils;
 import com.github.nkzawa.emitter.Emitter;
@@ -182,18 +183,22 @@ public class AdminAddProductActivity extends AppCompatActivity {
     private void addProduct () {
 
         Ion.with(getApplicationContext())
-                .load("http://192.168.43.198:3000/products")
-                .setMultipartParameter("price",edt_price.getText().toString() )
-                .setMultipartParameter("quatity", edt_quantity.getText().toString())
+                .load(NetworkConst.network+"/products")
+                .setMultipartParameter("price",edt_price.getText().toString())
+                .setMultipartParameter("quatity",edt_quantity.getText().toString())
                 .setMultipartParameter("description", edt_desc.getText().toString())
                 .setMultipartParameter("name", edt_name_product.getText().toString())
-                .setMultipartParameter("type", tvtype.getText().toString())
+                .setMultipartParameter("type",tvtype.getText().toString())
                 .setMultipartFile("productImage", "application/*", new File(mediaPath))
                 .asJsonObject()
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
-
+                        if (result.isJsonObject()){
+                            notyfi no = new notyfi(AdminAddProductActivity.this);
+                            no.setText("post product sucess !!!");
+                            no.show();
+                        }
                     }
                 });
     }

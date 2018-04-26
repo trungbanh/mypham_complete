@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,19 +7,18 @@
     android:orientation="vertical"
     tools:context=".user.cart.CartList">
 
-    <TextView
-        android:textSize="25dp"
-        android:text="List Product Order"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarcart"
+        android:background="@drawable/bg_sign_up"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#402136"
-        android:layout_marginBottom="5dp"/>
+    </android.support.v7.widget.Toolbar>
+
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_list_product_in_cart"
+        android:layout_below="@id/toolbarcart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -33,6 +32,7 @@
         android:textColor="#562087"
         android:layout_below="@id/item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"/>
 
-</LinearLayout>
+</RelativeLayout>
