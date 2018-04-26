@@ -60,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         init();
         Pre_process();
         SiginClick();
+
     }
 
     public void initPermission() {
