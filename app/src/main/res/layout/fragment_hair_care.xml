@@ -6,11 +6,11 @@
     android:orientation="vertical"
     tools:context=".user.catogries.HairCare">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list_product_hair_care"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="4dp"
-            tools:listitems="@layout/item_product"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_product_hair_care"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        tools:listitems="@layout/item_product" />
 
 </LinearLayout>

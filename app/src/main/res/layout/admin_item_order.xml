@@ -1,110 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_margin="4dp"
-    android:foreground="?selectableItemBackground"
-    android:clickable="true"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="6dp"
-        android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:weightSum="2"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_marginRight="6dp"
-            android:layout_marginLeft="16dp"
-            android:layout_weight="1"
-            android:layout_marginBottom="6dp"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:textAlignment="textStart"
-            android:id="@+id/tv_admin_order_name"
-            android:fontFamily="sans-serif-medium"
-            android:lines="1"
-            android:textColor="@android:color/black"
-            android:text="Nguyễn Thị B"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_marginRight="6dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginBottom="6dp"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:layout_weight="1"
-            android:textAlignment="textEnd"
-            android:id="@+id/tv_admin_order_status"
-            android:textColor="@android:color/holo_red_dark"
-            android:text="Processing"/>
+        android:orientation="vertical"
+        android:padding="6dp">
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:weightSum="2"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_marginRight="6dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginBottom="6dp"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:layout_weight="1"
-            android:id="@+id/tv_admin_order_product"
-            android:textAlignment="textStart"
-            android:textColor="@android:color/holo_red_dark"
-            android:text="Sản phẩm A"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_marginRight="6dp"
-            android:layout_marginLeft="16dp"
-            android:layout_weight="1"
-            android:layout_marginBottom="6dp"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:textAlignment="textEnd"
-            android:id="@+id/tv_admin_order_quantity"
-            android:fontFamily="sans-serif"
-            android:lines="1"
-            android:text="Quantity: 5"/>
-
-    </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/tv_admin_order_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="6dp"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-medium"
+                android:lines="1"
+                android:text="Nguyễn Thị B"
+                android:textAlignment="textStart"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_admin_order_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="6dp"
+                android:layout_weight="1"
+                android:text="Processing"
+                android:textAlignment="textEnd"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/tv_admin_order_product"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="6dp"
+                android:layout_weight="1"
+                android:text="Sản phẩm A"
+                android:textAlignment="textStart"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_admin_order_quantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="6dp"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif"
+                android:lines="1"
+                android:text="Quantity: 5"
+                android:textAlignment="textEnd"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
             android:layout_marginLeft="16dp"
-            android:background="@drawable/bg"
             android:layout_marginRight="16dp"
-            android:layout_height="1dp"/>
+            android:background="@drawable/bg"
+            android:orientation="horizontal" />
+
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="2"
-            android:layout_height="wrap_content">
+            android:weightSum="2">
+
             <ImageButton
-                android:layout_width="match_parent"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:id="@+id/btn_admin_order_check_paid"
-                android:src="@drawable/ic_btn_sign_in"/>
-            <ImageButton
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_delete"
-                android:id="@+id/btn_admin_order_delete"
                 android:layout_weight="1"
-                style="@style/Widget.AppCompat.Button.Borderless"/>
+                android:src="@drawable/ic_btn_sign_in" />
+
+            <ImageButton
+                android:id="@+id/btn_admin_order_delete"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_delete" />
         </LinearLayout>
     </LinearLayout>
 

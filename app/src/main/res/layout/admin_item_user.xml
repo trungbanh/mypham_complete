@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:foreground="?selectableItemBackground"
     android:clickable="true"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:foreground="?selectableItemBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp"
+        android:layout_height="match_parent"
         android:gravity="center_horizontal"
-        android:layout_height="match_parent">
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_admin_user"
             android:layout_width="96dp"
             android:layout_height="96dp"
-            app:civ_border_width="2dp"
-            android:id="@+id/img_admin_user"
-           app:civ_border_color="@color/colorPrimaryDark"
-            android:src="@drawable/mypham"/>
+            android:src="@drawable/mypham"
+            app:civ_border_color="@color/colorPrimaryDark"
+            app:civ_border_width="2dp" />
+
         <TextView
+            android:id="@+id/tv_admin_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:id="@+id/tv_admin_user_name"
-            android:textColor="@android:color/black"
-            android:text="Nguyễn Thị B"/>
+            android:text="Nguyễn Thị B"
+            android:textColor="@android:color/black" />
 
 
     </LinearLayout>

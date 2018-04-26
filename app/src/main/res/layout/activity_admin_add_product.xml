@@ -7,26 +7,31 @@
     android:background="@drawable/bg"
     android:fitsSystemWindows="true"
     tools:context=".admin.AdminAddProductActivity">
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg"
         android:theme="@style/AppTheme.AppBarOverlay">
+
         <FrameLayout
             android:layout_width="match_parent"
-            android:background="@drawable/bg"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg">
+
             <android.support.v7.widget.Toolbar
                 android:id="@+id/admin_add_product_toolbar"
                 android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
                 android:background="@drawable/bg"
                 android:translationZ="0dp"
-                android:layout_height="?attr/actionBarSize"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
         </FrameLayout>
     </android.support.design.widget.AppBarLayout>
-    <include layout="@layout/admin_content_add_product"
+
+    <include
+        layout="@layout/admin_content_add_product"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </android.support.design.widget.CoordinatorLayout>

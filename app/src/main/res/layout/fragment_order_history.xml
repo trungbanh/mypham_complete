@@ -2,14 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#ECEFF1"
+    android:orientation="vertical"
     tools:context="com.example.vuphu.app.admin.AdminCatogoriesFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_user_orders"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_user_order"/>
+        tools:listitem="@layout/item_user_order" />
 
 </LinearLayout>

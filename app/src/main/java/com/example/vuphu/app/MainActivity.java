@@ -3,9 +3,9 @@ package com.example.vuphu.app;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -40,15 +40,14 @@ import cz.msebera.android.httpclient.Header;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final int TIME_INTERVAL = 2000;
+    NavigationView navigationView;
     private MaterialSearchView searchView;
-    NavigationView navigationView ;
-    private ImageView cart ;
-
+    private ImageView cart;
     private SharedPreferences pre;
     private SharedPreferences.Editor edit;
-
-    private static final int TIME_INTERVAL = 2000;
     private long mBackPressed;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,15 +66,15 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        pre =getSharedPreferences("data", MODE_PRIVATE);
-        edit=pre.edit();
+        pre = getSharedPreferences("data", MODE_PRIVATE);
+        edit = pre.edit();
         SearchQuery();
         initView();
         viewCart();
 
     }
 
-    private void viewCart (){
+    private void viewCart() {
         cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,32 +84,31 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-     private void initView () {
+    private void initView() {
 
-         String user=pre.getString("type_user", "");
-         if (user.equals("admin")) {
-             navigationView.inflateMenu(R.menu.activity_main_admin);
-             setTitle(R.string.danhmucsanpham);
-             FragmentTransaction transaction;
-             transaction = getSupportFragmentManager().beginTransaction();
-             transaction.replace(R.id.content, AdminCatogoriesFragment.newInstance());
-             transaction.commit();
-         }
-         else {
-             navigationView.inflateMenu(R.menu.activity_main_drawer);
-             android.support.v4.app.FragmentTransaction transaction;
-             transaction = getSupportFragmentManager().beginTransaction();
-             transaction.replace(R.id.content, CatogriesFragment.newInstance());
-             transaction.commit();
-         }
-         navigationView.setNavigationItemSelectedListener(this);
-     }
+        String user = pre.getString("type_user", "");
+        if (user.equals("admin")) {
+            navigationView.inflateMenu(R.menu.activity_main_admin);
+            setTitle(R.string.danhmucsanpham);
+            FragmentTransaction transaction;
+            transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.content, AdminCatogoriesFragment.newInstance());
+            transaction.commit();
+        } else {
+            navigationView.inflateMenu(R.menu.activity_main_drawer);
+            android.support.v4.app.FragmentTransaction transaction;
+            transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.content, CatogriesFragment.newInstance());
+            transaction.commit();
+        }
+        navigationView.setNavigationItemSelectedListener(this);
+    }
 
-    private void SearchQuery () {
+    private void SearchQuery() {
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                AsyncHttpApi.get(pre.getString("token",""),"/products/search/"+query,null,new JsonHttpResponseHandler(){
+                AsyncHttpApi.get(pre.getString("token", ""), "/products/search/" + query, null, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                         super.onSuccess(statusCode, headers, response);
@@ -123,9 +121,10 @@ public class MainActivity extends AppCompatActivity
 
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
-                AsyncHttpApi.get(pre.getString("token",""),"/products/search/"+newText,null,new JsonHttpResponseHandler(){
+                AsyncHttpApi.get(pre.getString("token", ""), "/products/search/" + newText, null, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                         super.onSuccess(statusCode, headers, response);
@@ -145,15 +144,14 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onSearchViewClosed() {
-                String user=pre.getString("type_user", "");
+                String user = pre.getString("type_user", "");
                 if (user.equals("admin")) {
                     setTitle(R.string.danhmucsanpham);
                     android.support.v4.app.FragmentTransaction transaction;
                     transaction = getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.content, AdminCatogoriesFragment.newInstance());
                     transaction.commit();
-                }
-                else {
+                } else {
                     android.support.v4.app.FragmentTransaction transaction;
                     transaction = getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.content, CatogriesFragment.newInstance());
@@ -172,16 +170,16 @@ public class MainActivity extends AppCompatActivity
         }
         if (searchView.isSearchOpen()) {
             searchView.closeSearch();
-        }
-        else {
+        } else {
             applyExit();
         }
     }
+
     private void applyExit() {
         if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
             finish();
         } else {
-            Toast.makeText(this,"Press Again to exit", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Press Again to exit", Toast.LENGTH_LONG).show();
         }
         mBackPressed = System.currentTimeMillis();
     }
@@ -196,6 +194,7 @@ public class MainActivity extends AppCompatActivity
 
         return true;
     }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -216,12 +215,12 @@ public class MainActivity extends AppCompatActivity
                 finish();
                 return true;
 
-            case R.id.nav_profile :
+            case R.id.nav_profile:
                 AcountId u = new AcountId();
                 temp = ProfileFragment.newInstance(u);
                 setTitle(getString(R.string.thongtintaikhoan));
                 break;
-            case R.id.nav_cato :
+            case R.id.nav_cato:
                 setTitle(getString(R.string.danhmucsanpham));
                 temp = CatogriesFragment.newInstance();
                 break;
@@ -229,29 +228,29 @@ public class MainActivity extends AppCompatActivity
                 setTitle(getString(R.string.naptien));
                 temp = AddMoneyFragment.Companion.newInstance();
                 break;
-            case  R.id.nav_admin_cato :
+            case R.id.nav_admin_cato:
                 setTitle(R.string.danhmucsanpham);
                 temp = AdminCatogoriesFragment.newInstance();
                 break;
-            case R.id.nav_admin_orders :
+            case R.id.nav_admin_orders:
                 setTitle(getString(R.string.donhang));
                 temp = AdminOrdersFragment.newInstance();
                 break;
-            case R.id.nav_admin_user :
+            case R.id.nav_admin_user:
                 setTitle(getString(R.string.quanlinguoidung));
                 temp = AdminUserFragment.newInstance();
                 break;
-            case R.id.nav_order_his :
+            case R.id.nav_order_his:
                 setTitle(getString(R.string.order_history));
                 temp = OrderHistoryFragment.newInstance();
                 break;
-            case R.id.nav_add_money_his :
+            case R.id.nav_add_money_his:
                 setTitle("Add money History");
                 temp = AddMoneyHistoryFragment.Companion.newInstance();
                 break;
         }
         android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content,temp);
+        transaction.replace(R.id.content, temp);
         transaction.commit();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -12,15 +12,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/tv_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
             android:fontFamily="sans-serif-light"
-            android:textSize="24sp"
+            android:text="Giá: 20.000 đ"
             android:textColor="@color/colorPrimary"
-            android:text="Giá: 20.000 đ" />
+            android:textSize="24sp" />
+
         <TextView
             android:id="@+id/tv_description"
             android:layout_width="wrap_content"
@@ -28,7 +30,6 @@
             android:layout_margin="@dimen/text_margin"
             android:text="@string/large_text" />
     </LinearLayout>
-
 
 
 </android.support.v4.widget.NestedScrollView>

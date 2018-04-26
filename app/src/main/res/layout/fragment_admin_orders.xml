@@ -9,6 +9,6 @@
         android:id="@+id/list_admin_orders"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/admin_item_order"/>
+        tools:listitem="@layout/admin_item_order" />
 
 </LinearLayout>

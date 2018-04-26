@@ -5,32 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
-    android:orientation="vertical"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context="com.example.vuphu.app.admin.AdminEditProductActivity">
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg"
         android:theme="@style/AppTheme.AppBarOverlay">
+
         <FrameLayout
             android:layout_width="match_parent"
-            android:background="@drawable/bg"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg">
+
             <android.support.v7.widget.Toolbar
                 android:id="@+id/admin_toolbar"
                 android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
                 android:background="@drawable/bg"
                 android:translationZ="0dp"
-                android:layout_height="?attr/actionBarSize"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
+
             <com.miguelcatalan.materialsearchview.MaterialSearchView
                 android:id="@+id/search_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </FrameLayout>
     </android.support.design.widget.AppBarLayout>
-    <include layout="@layout/admin_content_edit_product"
+
+    <include
+        layout="@layout/admin_content_edit_product"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 </android.support.design.widget.CoordinatorLayout>

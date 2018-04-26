@@ -13,34 +13,38 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
             <FrameLayout
-                android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    android:background="@drawable/bg"
                     android:layout_height="?attr/actionBarSize"
+                    android:background="@drawable/bg"
                     app:popupTheme="@style/AppTheme.PopupOverlay" />
+
                 <com.miguelcatalan.materialsearchview.MaterialSearchView
                     android:id="@+id/search_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </FrameLayout>
+
             <ImageView
                 android:id="@+id/img_cart"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_add_to_cart"
                 android:layout_width="48dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_add_to_cart" />
         </LinearLayout>
 
 
     </android.support.design.widget.AppBarLayout>
+
     <include layout="@layout/content_main" />
 </android.support.design.widget.CoordinatorLayout>

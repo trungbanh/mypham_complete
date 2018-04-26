@@ -1,8 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.example.vuphu.app.admin.AdminCatogoriesFragment">
 
@@ -11,17 +11,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="4dp"
-        tools:listitem="@layout/admin_item_product">
-    </android.support.v7.widget.RecyclerView>
+        tools:listitem="@layout/admin_item_product"/>
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:fabSize="normal"
+        android:layout_gravity="bottom|end"
         android:layout_margin="10dp"
-        android:id="@+id/fab_add"
         android:src="@drawable/ic_add_black_24dp"
-        tools:ignore="MissingConstraints"
-        android:layout_gravity="bottom|end"/>
+        app:fabSize="normal"
+        tools:ignore="MissingConstraints" />
 
 </FrameLayout>

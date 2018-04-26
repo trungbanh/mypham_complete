@@ -28,11 +28,11 @@ import static android.content.Context.MODE_PRIVATE;
 public class SearchFragment extends Fragment {
 
 
-
     private RecyclerView list_product;
     private ArrayList<Product> product;
     private JSONArray jsonArray;
     private SharedPreferences pre;
+
     @SuppressLint("ValidFragment")
     public SearchFragment(JSONArray jsonArray) {
         this.jsonArray = jsonArray;
@@ -60,10 +60,10 @@ public class SearchFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_search, container, false);
         list_product = v.findViewById(R.id.list_search_product);
         list_product.setHasFixedSize(true);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         list_product.setLayoutManager(gridLayoutManager);
         product = new ArrayList<>();
-        pre =getActivity().getSharedPreferences("data", MODE_PRIVATE);
+        pre = getActivity().getSharedPreferences("data", MODE_PRIVATE);
         loafProduct();
 
         ItemOffsetDecoration itemDecoration = new ItemOffsetDecoration(getContext(), R.dimen.item_offset);
@@ -72,26 +72,26 @@ public class SearchFragment extends Fragment {
         return v;
     }
 
-    public void loafProduct () {
+    public void loafProduct() {
 
         Gson gson = new Gson();
         JSONArray jArray = jsonArray;
         if (jArray != null) {
-            for (int i=0;i<jArray.length();i++){
+            for (int i = 0; i < jArray.length(); i++) {
                 try {
-                    product.add(gson.fromJson(jArray.get(i).toString(),Product.class));
-                    Log.i("product",jArray.get(i).toString());
+                    product.add(gson.fromJson(jArray.get(i).toString(), Product.class));
+                    Log.i("product", jArray.get(i).toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         }
-        String user=pre.getString("type_user", "");
+        String user = pre.getString("type_user", "");
         if (user.equals("user")) {
             ProductApdater.productAdap adap = new ProductApdater.productAdap(product, getContext());
             list_product.setAdapter(adap);
         } else {
-            AdminProductApdater.productAdap adap = new AdminProductApdater.productAdap(product, getContext(),pre.getString(NetworkConst.token,""));
+            AdminProductApdater.productAdap adap = new AdminProductApdater.productAdap(product, getContext(), pre.getString(NetworkConst.token, ""));
             list_product.setAdapter(adap);
         }
     }
