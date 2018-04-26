@@ -146,25 +146,27 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         String token = pre.getString(NetworkConst.token, "");
-        if (mail.equals("admin@admin.com")) {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            edit.putString("type_user", "admin");
-            edit.commit();
-            if (!pre.getString(NetworkConst.token, "").isEmpty() &&
-                    !pre.getString("type_user", "").isEmpty()) {
-                notyfi no = new notyfi(LoginActivity.this);
-                no.show();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class)); }progressBar.hide();
-            finish(); } else {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            edit.putString("type_user", "user");
-            edit.commit();
-            if (!pre.getString(NetworkConst.token, "").isEmpty() &&
-                    !pre.getString("type_user", "").isEmpty()) {
-                notyfi no = new notyfi(LoginActivity.this);
-                no.show();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class)); }progressBar.hide();
-            finish();
+        if (!token.isEmpty()) {
+            if (mail.equals("admin@admin.com")) {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                edit.putString("type_user", "admin");
+                edit.commit();
+                if (!pre.getString(NetworkConst.token, "").isEmpty() &&
+                        !pre.getString("type_user", "").isEmpty()) {
+                    notyfi no = new notyfi(LoginActivity.this);
+                    no.show();
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class)); }progressBar.hide();
+                finish(); } else {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                edit.putString("type_user", "user");
+                edit.commit();
+                if (!pre.getString(NetworkConst.token, "").isEmpty() &&
+                        !pre.getString("type_user", "").isEmpty()) {
+                    notyfi no = new notyfi(LoginActivity.this);
+                    no.show();
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class)); }progressBar.hide();
+                finish();
+            }
         }
         return token;
     }

@@ -108,6 +108,7 @@ public class AdminAddProductActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 typeProduct = arr[position];
+                tvtype.setText(typeProduct);
             }
 
             @Override
@@ -141,9 +142,7 @@ public class AdminAddProductActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == 0) {
             // Get the Image from data
             Uri selectedImage = data.getData();
-
             Cursor cursor = getContentResolver().query(selectedImage, null, null, null, null);
-
             assert cursor != null;
             cursor.moveToFirst();
 
@@ -176,14 +175,17 @@ public class AdminAddProductActivity extends AppCompatActivity {
             Toast.makeText(this, "Type product is empty!", Toast.LENGTH_SHORT).show();
         } else if (typeProduct == null) {
             Toast.makeText(this, "Type product is null!", Toast.LENGTH_SHORT).show();
-        } else {
+        } else if (mediaPath == null){
+            Toast.makeText(this, "Image product is null!", Toast.LENGTH_SHORT).show();
+        }
+        else {
             Ion.with(getApplicationContext())
                     .load(NetworkConst.network + "/products")
                     .setMultipartParameter("price", price)
                     .setMultipartParameter("quatity", quality)
                     .setMultipartParameter("description", des)
                     .setMultipartParameter("name", name)
-                    .setMultipartParameter("type", typeProduct)
+                    .setMultipartParameter("type", tvtype.getText().toString())
                     .setMultipartFile("productImage", "application/*", new File(mediaPath))
                     .asJsonObject()
                     .setCallback(new FutureCallback<JsonObject>() {

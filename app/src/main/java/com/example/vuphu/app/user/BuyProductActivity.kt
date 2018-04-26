@@ -103,7 +103,6 @@ class BuyProductActivity : AppCompatActivity() {
                 var order = gson.fromJson<listOrder>(response!!.toString(), listOrder::class.java!!)
                 money = order.balanced
             }
-
             override fun onFailure(statusCode: Int, headers: Array<Header>?, throwable: Throwable, errorResponse: JSONObject?) {
                 Log.i("fail", errorResponse!!.toString())
             }

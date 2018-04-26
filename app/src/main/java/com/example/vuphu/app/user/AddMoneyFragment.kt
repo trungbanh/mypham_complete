@@ -81,9 +81,6 @@ class AddMoneyFragment : Fragment() {
             }
         })
     }
-
-
-
     companion object {
         fun newInstance(): AddMoneyFragment {
             val fragment = AddMoneyFragment()
