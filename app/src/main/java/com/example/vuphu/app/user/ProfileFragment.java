@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,9 +93,20 @@ public class ProfileFragment extends Fragment {
         put.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(TextUtils.isEmpty(name.getText().toString())) {
+                    name.setError("please fill you name before submit");
+                    return;
+                }
+                if(TextUtils.isEmpty(phone.getText().toString())) {
+                    phone.setError("please fill you phone number before submit");
+                    return;
+                }
+                if(TextUtils.isEmpty(addrss.getText().toString())) {
+                    addrss.setError("please fill you address before submit");
+                    return;
+                }
                 upDateInfo(pre.getString("token",""));
                 Toast.makeText(getActivity(), "update complete!!!", Toast.LENGTH_SHORT).show();
-
             }
         });
     }
@@ -128,6 +140,8 @@ public class ProfileFragment extends Fragment {
         String pphone = phone.getText().toString();
         String paddrs = addrss.getText().toString();
 
+
+
         params.put("address",paddrs);
         params.put("name",pname);
         params.put("phone",pphone);
@@ -145,7 +159,7 @@ public class ProfileFragment extends Fragment {
                 u = order.getAccountId();
                 name.setText(u.getName());
                 Picasso.get().load(NetworkConst.network+"/"+u.getAvatar().replace("\\","/")).error(R.drawable.ic_terrain_black_24dp).into(avt);
-                money.setText(order.getBalanced().toString()+"0");
+                money.setText(order.getBalanced().toString());
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {

@@ -16,6 +16,7 @@ import com.example.vuphu.app.MainActivity
 import com.example.vuphu.app.R
 import com.example.vuphu.app.`object`.Payment
 import com.example.vuphu.app.`object`.ProductInCart
+import com.example.vuphu.app.`object`.listOrder
 import com.example.vuphu.app.user.cart.Cart
 import com.google.gson.Gson
 import com.loopj.android.http.JsonHttpResponseHandler
@@ -35,6 +36,8 @@ class BuyProductActivity : AppCompatActivity() {
     private var add: ImageView? = null
     private var buy: Button? = null
 
+    var money: Int? =null
+
     private var pre: SharedPreferences? = null
     private var edit: SharedPreferences.Editor? = null
 
@@ -43,7 +46,7 @@ class BuyProductActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_buy_product)
-        // /order <productid,quantity>
+
         init()
 
         pre = getSharedPreferences("data", Context.MODE_PRIVATE)
@@ -58,6 +61,8 @@ class BuyProductActivity : AppCompatActivity() {
         if (name == null) {
             Log.i("null", "fadfasf")
         }
+
+        getToken(pre!!.getString("token",""))
 
         productsName!!.text = name
         price!!.text = priceget.toString() + ""
@@ -77,10 +82,9 @@ class BuyProductActivity : AppCompatActivity() {
             quantity!!.text = no.toString()
             sumary!!.text = (no * priceget).toString()
         }
-
         buy!!.setOnClickListener {
-            val check = Integer.parseInt(quantity!!.text.toString()) * no
-            if (false) {
+            val check = money?.minus(Integer.parseInt(quantity!!.text.toString()).times(no))
+            if (check?.compareTo(0)!! <0) {
                 Toast.makeText(this@BuyProductActivity, "no enough money", Toast.LENGTH_SHORT).show()
             } else {
                 //add to cart
@@ -91,10 +95,20 @@ class BuyProductActivity : AppCompatActivity() {
                 //postPostOrder(product.id, no)
             }
         }
-
-
     }
+    internal fun getToken(token: String?) {
+        AsyncHttpApi.get(token, "/account", null, object : JsonHttpResponseHandler() {
+            override fun onSuccess(statusCode: Int, headers: Array<Header>?, response: JSONObject?) {
+                val gson = Gson()
+                var order = gson.fromJson<listOrder>(response!!.toString(), listOrder::class.java!!)
+                money = order.balanced
+            }
 
+            override fun onFailure(statusCode: Int, headers: Array<Header>?, throwable: Throwable, errorResponse: JSONObject?) {
+                Log.i("fail", errorResponse!!.toString())
+            }
+        })
+    }
     private fun init() {
         productsName = findViewById(R.id.tv_buy_name)
         price = findViewById(R.id.tv_buy_price)

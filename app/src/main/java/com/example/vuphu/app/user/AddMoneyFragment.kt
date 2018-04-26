@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +14,16 @@ import android.widget.EditText
 import android.widget.Toast
 
 import com.example.vuphu.app.AcsynHttp.AsyncHttpApi
+import com.example.vuphu.app.AcsynHttp.NetworkConst
 import com.example.vuphu.app.Dialog.notyfi
 import com.example.vuphu.app.R
+import com.example.vuphu.app.R.string.money
+import com.example.vuphu.app.`object`.listOrder
+import com.example.vuphu.app.`object`.order
+import com.google.gson.Gson
 import com.loopj.android.http.JsonHttpResponseHandler
 import com.loopj.android.http.RequestParams
+import com.squareup.picasso.Picasso
 
 import org.json.JSONObject
 
@@ -29,6 +36,9 @@ class AddMoneyFragment : Fragment() {
     private var numbercard: EditText? = null
 
     private var addmoney: Button? = null
+
+    private var money = null
+
 
     private var pre: SharedPreferences? = null
 
@@ -71,6 +81,9 @@ class AddMoneyFragment : Fragment() {
             }
         })
     }
+
+
+
     companion object {
         fun newInstance(): AddMoneyFragment {
             val fragment = AddMoneyFragment()

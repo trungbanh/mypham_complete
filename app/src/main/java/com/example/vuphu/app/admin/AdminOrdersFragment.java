@@ -62,6 +62,7 @@ public class AdminOrdersFragment extends Fragment {
         LinearLayoutManager gridLayoutManager = new LinearLayoutManager(getContext());
         list_order.setLayoutManager(gridLayoutManager);
         list_order.setHasFixedSize(true);
+
         loadOrder();
         return v;
     }

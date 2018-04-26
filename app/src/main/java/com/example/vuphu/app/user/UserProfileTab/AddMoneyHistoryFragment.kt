@@ -87,4 +87,5 @@ class AddMoneyHistoryFragment : Fragment() {
         }
 
     }
+
 }

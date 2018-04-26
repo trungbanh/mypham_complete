@@ -40,6 +40,8 @@ public class AdminCatogoriesFragment extends Fragment {
 
     private ArrayList<Product> product;
     private SharedPreferences pre;
+
+    private AdminProductApdater.productAdap adap;
     public AdminCatogoriesFragment() {
     }
 
@@ -60,10 +62,11 @@ public class AdminCatogoriesFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_admin_catogories, container, false);
         product = new ArrayList<>();
+
         pre =getActivity().getSharedPreferences("data", MODE_PRIVATE);
         fab = v.findViewById(R.id.fab_add);
         AddProduct();
-        loafProduct();
+        //loafProduct();
         init(v);
 
         return v;
@@ -85,7 +88,7 @@ public class AdminCatogoriesFragment extends Fragment {
             }
         });
     }
-    private void loafProduct () {
+    public void loafProduct () {
         AsyncHttpApi.get(pre.getString(NetworkConst.token,""),"/products/", null,
                 new JsonHttpResponseHandler() {
             @Override
@@ -103,15 +106,18 @@ public class AdminCatogoriesFragment extends Fragment {
                         }
                     }
                 }
-                AdminProductApdater.productAdap adap = new AdminProductApdater.productAdap(product,
+                adap = new AdminProductApdater.productAdap(product,
                         getContext(),pre.getString(NetworkConst.token,"") );
                 list_product.setAdapter(adap);
                 adap.notifyDataSetChanged();
             }
         });
     }
+
+
     @Override
     public void onResume() {
         super.onResume();
+        loafProduct();
     }
 }

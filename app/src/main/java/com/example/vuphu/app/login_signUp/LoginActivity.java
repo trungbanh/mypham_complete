@@ -1,8 +1,11 @@
 package com.example.vuphu.app.login_signUp;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -37,26 +40,46 @@ public class LoginActivity extends AppCompatActivity {
     private String mail ;
     private String pass ;
     private SignUpToken token ;
-
     private SharedPreferences pre;
     private SharedPreferences.Editor edit;
     private Intent intent;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         pre =getSharedPreferences("data", MODE_PRIVATE);
         edit=pre.edit();
-
+        initPermission();
+        if (!pre.getString(NetworkConst.token,"").isEmpty() &&
+                !pre.getString("type_user","").isEmpty()){
+            notyfi no = new notyfi(LoginActivity.this);
+            no.show();
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        }
         intent = getIntent() ;
         init();
         Pre_process ();
         SiginClick ();
-
-
     }
+    public void initPermission(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                //Permisson don't granted
+                if (shouldShowRequestPermissionRationale(
+                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    Toast.makeText(LoginActivity.this, "Permission isn't granted ", Toast.LENGTH_SHORT).show();
+                }
+                // Permisson don't granted and dont show dialog again.
+                else {
+                    Toast.makeText(LoginActivity.this, "Permisson don't granted and dont show dialog again ", Toast.LENGTH_SHORT).show();
+                }
+                //Register permission
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+
+            }
+        }
+    }
+
     private void SiginClick (){
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +101,6 @@ public class LoginActivity extends AppCompatActivity {
         mail = intent.getStringExtra("email");
         pass = intent.getStringExtra("pass");
         emailInput.setText(mail);
-
         passInput.setText(pass);
 
     }
@@ -88,6 +110,8 @@ public class LoginActivity extends AppCompatActivity {
             emailInput.setError("cant be empty");
             return;
         }
+
+
         if(TextUtils.isEmpty(passInput.getText().toString())) {
             passInput.setError("cant be empty");
             return;
@@ -101,24 +125,29 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 edit.putString("type_user", "admin");
                 edit.commit();
+                if (!pre.getString(NetworkConst.token,"").isEmpty() &&
+                        !pre.getString("type_user","").isEmpty()){
+                    notyfi no = new notyfi(LoginActivity.this);
+                    no.show();
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                }
                 progressBar.hide();
                 finish();
             } else {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 edit.putString("type_user", "user");
                 edit.commit();
+                if (!pre.getString(NetworkConst.token,"").isEmpty() &&
+                        !pre.getString("type_user","").isEmpty()){
+                    notyfi no = new notyfi(LoginActivity.this);
+                    no.show();
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                }
                 progressBar.hide();
                 finish();
             }
-        }else {
-            Toast.makeText(this, "incorect password", Toast.LENGTH_SHORT).show();
         }
-        if (!pre.getString(NetworkConst.token,"").isEmpty() &&
-                !pre.getString("type_user","").isEmpty()){
-            notyfi no = new notyfi(LoginActivity.this);
-            no.show();
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-        }
+
 
     }
     public void signUp(View view) {

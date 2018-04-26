@@ -110,6 +110,22 @@ public class SignUpActivity extends AppCompatActivity {
     }
     public void signUp(View view) {
         getText();
+        if(email.getText().toString().compareTo("@gmail.com")==0) {
+            email.setError("must be user gmail");
+            return;
+        }
+        if(email.getText().toString().isEmpty()) {
+            email.setError("cant null ");
+            return;
+        }
+        if(name.getText().toString().isEmpty()) {
+            name.setError("cant null ");
+            return;
+        }
+        if(pass.getText().toString().isEmpty()) {
+            pass.setError("cant null ");
+            return;
+        }
         postResquest(getRequest());
     }
 }
