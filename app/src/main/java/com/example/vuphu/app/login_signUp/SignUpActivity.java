@@ -134,4 +134,3 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 }
-g

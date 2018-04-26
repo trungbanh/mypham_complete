@@ -13,6 +13,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -37,27 +38,32 @@ public class AdminAddProductActivity extends AppCompatActivity {
 
     public static final int PICK_IMAGE = 100;
     protected Uri uri;
-    String mediaPath;
+
+    private String mediaPath;
     private EditText edt_name_product, edt_price, edt_desc, edt_quantity;
     private TextView tvtype;
     private Spinner edt_type;
     private ImageView img_product;
     private FloatingActionButton btn_add_img;
     private Button btn_add;
+
     private String arr[] = {
-            "lotion",
-            "hair care",
-            "skin care cosmetics",
-            "perfume",
-            "lipstick"};
+            "Lotion",
+            "Hair care",
+            "Skin care cosmetics",
+            "Perfume",
+            "Lipstick"};
+
     private SharedPreferences pre;
     private ProgressDialog progressBar;
+    private String typeProduct;
 
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_add_product);
+        init();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.admin_add_product_toolbar);
         setSupportActionBar(toolbar);
@@ -68,7 +74,6 @@ public class AdminAddProductActivity extends AppCompatActivity {
         progressBar = new ProgressDialog(this);
         progressBar.setMessage("Đang xử lí...");
         pre = getSharedPreferences("data", MODE_PRIVATE);
-        init();
         setDataType();
     }
 
@@ -95,29 +100,14 @@ public class AdminAddProductActivity extends AppCompatActivity {
     }
 
     private void setDataType() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arr);
+        adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
 
-        if (TextUtils.isEmpty(edt_name_product.getText().toString())) {
-            edt_name_product.setError("cant be empty");
-        }
-        if (TextUtils.isEmpty(edt_price.getText().toString())) {
-            edt_price.setError("cant be empty");
-        }
-        if (TextUtils.isEmpty(edt_desc.getText().toString())) {
-            edt_desc.setError("cant be empty");
-        }
-        if (TextUtils.isEmpty(edt_quantity.getText().toString())) {
-            edt_quantity.setError("cant be empty");
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, arr);
-        adapter.setDropDownViewResource
-                (android.R.layout.simple_list_item_single_choice);
         edt_type.setAdapter(adapter);
         edt_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                tvtype.setText(arr[position]);
+                typeProduct = arr[position];
             }
 
             @Override
@@ -131,7 +121,6 @@ public class AdminAddProductActivity extends AppCompatActivity {
                 performFileSearch();
             }
         });
-
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -154,9 +143,8 @@ public class AdminAddProductActivity extends AppCompatActivity {
             Uri selectedImage = data.getData();
 
             Cursor cursor = getContentResolver().query(selectedImage, null, null, null, null);
-            if (cursor != null) {
 
-            }
+            assert cursor != null;
             cursor.moveToFirst();
 
             int columnIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
@@ -175,26 +163,27 @@ public class AdminAddProductActivity extends AppCompatActivity {
         String quality = edt_quantity.getText().toString();
         String des = edt_desc.getText().toString();
         String name = edt_name_product.getText().toString();
-        String tvType = tvtype.getText().toString();
 
-        if (TextUtils.equals(price, "")) {
+        if (TextUtils.equals(name, "")) {
+            Toast.makeText(this, "Product name is empty!", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.equals(price, "")) {
             Toast.makeText(this, "Price is empty!", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.equals(quality, "")) {
             Toast.makeText(this, "Quality is empty!", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.equals(des, "")) {
-            Toast.makeText(this, "Description is empty!", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.equals(name, "")) {
-            Toast.makeText(this, "Product name is empty!", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.equals(tvType, "")) {
-            Toast.makeText(this, "Type is empty!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Introduce is empty!", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.equals(typeProduct, "")) {
+            Toast.makeText(this, "Type product is empty!", Toast.LENGTH_SHORT).show();
+        } else if (typeProduct == null) {
+            Toast.makeText(this, "Type product is null!", Toast.LENGTH_SHORT).show();
         } else {
             Ion.with(getApplicationContext())
                     .load(NetworkConst.network + "/products")
-                    .setMultipartParameter("price", edt_price.getText().toString())
-                    .setMultipartParameter("quatity", edt_quantity.getText().toString())
-                    .setMultipartParameter("description", edt_desc.getText().toString())
-                    .setMultipartParameter("name", edt_name_product.getText().toString())
-                    .setMultipartParameter("type", tvtype.getText().toString())
+                    .setMultipartParameter("price", price)
+                    .setMultipartParameter("quatity", quality)
+                    .setMultipartParameter("description", des)
+                    .setMultipartParameter("name", name)
+                    .setMultipartParameter("type", typeProduct)
                     .setMultipartFile("productImage", "application/*", new File(mediaPath))
                     .asJsonObject()
                     .setCallback(new FutureCallback<JsonObject>() {
