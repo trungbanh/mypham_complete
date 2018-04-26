@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -37,7 +35,7 @@ public class submit {
 
     @SuppressLint("ResourceAsColor")
     public void show() {
-        dialog = new Dialog(this.context,R.style.translucentdialog);
+        dialog = new Dialog(this.context, R.style.translucentdialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));

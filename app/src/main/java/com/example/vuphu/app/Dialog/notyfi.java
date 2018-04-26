@@ -3,10 +3,7 @@ package com.example.vuphu.app.Dialog;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -19,19 +16,19 @@ import com.example.vuphu.app.R;
 
 public class notyfi {
 
-    private Activity context;
-    private final Dialog dialog;
-    private Button dialogButton;
-    private TextView text;
-    private ImageView icon;
     final LinearLayout.LayoutParams lp = new
             LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT);
+    private final Dialog dialog;
+    private Activity context;
+    private Button dialogButton;
+    private TextView text;
+    private ImageView icon;
 
     @SuppressLint("ResourceAsColor")
     public notyfi(Activity context) {
         this.context = context;
-        dialog = new Dialog(this.context,R.style.translucentdialog);
+        dialog = new Dialog(this.context, R.style.translucentdialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));

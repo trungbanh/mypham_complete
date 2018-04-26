@@ -33,15 +33,16 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class AdminCatogoriesFragment extends Fragment {
 
-    private FloatingActionButton fab ;
+    private FloatingActionButton fab;
     private RecyclerView list_product;
-    private GridLayoutManager gridLayoutManager ;
-    private ItemOffsetDecoration itemDecoration ;
+    private GridLayoutManager gridLayoutManager;
+    private ItemOffsetDecoration itemDecoration;
 
     private ArrayList<Product> product;
     private SharedPreferences pre;
 
     private AdminProductApdater.productAdap adap;
+
     public AdminCatogoriesFragment() {
     }
 
@@ -51,6 +52,7 @@ public class AdminCatogoriesFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +65,7 @@ public class AdminCatogoriesFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_admin_catogories, container, false);
         product = new ArrayList<>();
 
-        pre =getActivity().getSharedPreferences("data", MODE_PRIVATE);
+        pre = getActivity().getSharedPreferences("data", MODE_PRIVATE);
         fab = v.findViewById(R.id.fab_add);
         AddProduct();
         //loafProduct();
@@ -71,16 +73,18 @@ public class AdminCatogoriesFragment extends Fragment {
 
         return v;
     }
-    private void init (View  v){
+
+    private void init(View v) {
         list_product = v.findViewById(R.id.list_admin_product);
         list_product.setHasFixedSize(true);
-        gridLayoutManager = new GridLayoutManager(getContext(),2);
+        gridLayoutManager = new GridLayoutManager(getContext(), 2);
         list_product.setLayoutManager(gridLayoutManager);
         list_product.setNestedScrollingEnabled(false);
         itemDecoration = new ItemOffsetDecoration(getContext(), R.dimen.item_offset);
         list_product.addItemDecoration(itemDecoration);
     }
-    private void AddProduct (){
+
+    private void AddProduct() {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,30 +92,31 @@ public class AdminCatogoriesFragment extends Fragment {
             }
         });
     }
-    public void loafProduct () {
-        AsyncHttpApi.get(pre.getString(NetworkConst.token,""),"/products/", null,
+
+    public void loafProduct() {
+        AsyncHttpApi.get(pre.getString(NetworkConst.token, ""), "/products/", null,
                 new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                Gson gson = new Gson();
-                JSONArray jArray = response;
-                //Log.i("productID",response.toString());
-                if (jArray != null) {
-                    for (int i=0;i<jArray.length();i++){
-                        try {
-                            product.add(gson.fromJson(jArray.get(i).toString(),Product.class));
-                            Log.i("productID",product.get(i).getId());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                        Gson gson = new Gson();
+                        JSONArray jArray = response;
+                        //Log.i("productID",response.toString());
+                        if (jArray != null) {
+                            for (int i = 0; i < jArray.length(); i++) {
+                                try {
+                                    product.add(gson.fromJson(jArray.get(i).toString(), Product.class));
+                                    Log.i("productID", product.get(i).getId());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
                         }
+                        adap = new AdminProductApdater.productAdap(product,
+                                getContext(), pre.getString(NetworkConst.token, ""));
+                        list_product.setAdapter(adap);
+                        adap.notifyDataSetChanged();
                     }
-                }
-                adap = new AdminProductApdater.productAdap(product,
-                        getContext(),pre.getString(NetworkConst.token,"") );
-                list_product.setAdapter(adap);
-                adap.notifyDataSetChanged();
-            }
-        });
+                });
     }
 
 

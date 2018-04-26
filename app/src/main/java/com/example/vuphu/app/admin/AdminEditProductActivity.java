@@ -1,20 +1,15 @@
 package com.example.vuphu.app.admin;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.ParcelFileDescriptor;
-import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,7 +26,6 @@ import com.example.vuphu.app.AcsynHttp.AsyncHttpApi;
 import com.example.vuphu.app.AcsynHttp.NetworkConst;
 import com.example.vuphu.app.Dialog.notyfi;
 import com.example.vuphu.app.R;
-import com.example.vuphu.app.RetrofitAPI.ApiUtils;
 import com.example.vuphu.app.object.Product;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -40,42 +34,30 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 
 import cz.msebera.android.httpclient.Header;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class AdminEditProductActivity extends AppCompatActivity {
 
     private static final int READ_REQUEST_CODE = 42;
-
-
-
-    private EditText edt_name_product, edt_desc, edt_quantity ,edt_price;
-    private TextView select ;
+    protected Uri uri;
+    private EditText edt_name_product, edt_desc, edt_quantity, edt_price;
+    private TextView select;
     private Spinner type_product;
     private ImageView img_product;
     private Product product;
-    private ArrayAdapter<String> listType ;
+    private ArrayAdapter<String> listType;
     private Button btn_update;
-
     private SharedPreferences pre;
-    private String arr [] = {
+    private String arr[] = {
             "lotion",
             "hair care",
             "skin care cosmetics",
             "perfume",
             "lipstick"};
 
-    protected   Uri uri;
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,20 +70,21 @@ public class AdminEditProductActivity extends AppCompatActivity {
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         init();
         type_product.setAdapter(listType);
-        pre =getSharedPreferences("data", MODE_PRIVATE);
+        pre = getSharedPreferences("data", MODE_PRIVATE);
         Intent intent = getIntent();
 
         product = new Product();
-        if (intent!=null) {
+        if (intent != null) {
             product.setId(intent.getStringExtra("productID"));
             product.setDescription(intent.getStringExtra("productPRICE"));
             product.setName(intent.getStringExtra("productNAME"));
-            product.setQuatity(intent.getIntExtra("productQUATITY",0));
+            product.setQuatity(intent.getIntExtra("productQUATITY", 0));
             product.setDescription(intent.getStringExtra("productDES"));
             product.setProductImage(intent.getStringExtra("productIMAGE"));
         }
         setDataType();
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -111,6 +94,7 @@ public class AdminEditProductActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     private void init() {
         edt_name_product = findViewById(R.id.edt_admin_name_product);
 
@@ -121,7 +105,7 @@ public class AdminEditProductActivity extends AppCompatActivity {
         btn_update = findViewById(R.id.btn_admin_edit_product);
         edt_price = findViewById(R.id.edt_admin_price_product);
         select = findViewById(R.id.tv_select);
-        listType = new ArrayAdapter<>(this.getApplicationContext(),android.R.layout.simple_spinner_item,arr);
+        listType = new ArrayAdapter<>(this.getApplicationContext(), android.R.layout.simple_spinner_item, arr);
         listType.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
     }
 
@@ -154,12 +138,13 @@ public class AdminEditProductActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             uri = data.getData();
-            Log.i("link",uri.toString());
+            Log.i("link", uri.toString());
             try {
                 final InputStream imageStream = getContentResolver().openInputStream(uri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
@@ -168,36 +153,54 @@ public class AdminEditProductActivity extends AppCompatActivity {
                 e.printStackTrace();
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
             }
-        }else {
-            Toast.makeText(this, "You haven't picked Image",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show();
         }
     }
-    private void UpdateProduct () {
-        RequestParams params = new RequestParams();
-        params.put("name",edt_name_product.getText().toString());
-        params.put("quatity",edt_quantity.getText().toString());
-        params.put("price",edt_price.getText().toString());
-        params.put("description",edt_desc.getText().toString());
-        params.put("type",select.getText().toString());
 
-        AsyncHttpApi.put(pre.getString(NetworkConst.token,""),"/products/"
-                +product.getId(), params,new JsonHttpResponseHandler(){
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-                response.toString();
-                try {
-                    if (response.get("message").toString().equals("Product updated!")){
-                        Toast.makeText(AdminEditProductActivity.this, "Update complete", Toast.LENGTH_SHORT).show();
-                        notyfi no = new notyfi(AdminEditProductActivity.this);
-                        no.setText("edit product complete !!!");
-                        no.show();
+    private void UpdateProduct() {
+        String price = edt_price.getText().toString();
+        String quality = edt_quantity.getText().toString();
+        String des = edt_desc.getText().toString();
+        String name = edt_name_product.getText().toString();
+        String tvType = select.getText().toString();
 
+        if (TextUtils.equals(price, "")) {
+            Toast.makeText(this, "Price is empty!", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.equals(quality, "")) {
+            Toast.makeText(this, "Quality is empty!", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.equals(des, "")) {
+            Toast.makeText(this, "Description is empty!", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.equals(name, "")) {
+            Toast.makeText(this, "Product name is empty!", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.equals(tvType, "")) {
+            Toast.makeText(this, "Type is empty!", Toast.LENGTH_SHORT).show();
+        } else {
+            RequestParams params = new RequestParams();
+            params.put("name", edt_name_product.getText().toString());
+            params.put("quatity", edt_quantity.getText().toString());
+            params.put("price", edt_price.getText().toString());
+            params.put("description", edt_desc.getText().toString());
+            params.put("type", select.getText().toString());
+
+            AsyncHttpApi.put(pre.getString(NetworkConst.token, ""), "/products/"
+                    + product.getId(), params, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    super.onSuccess(statusCode, headers, response);
+                    response.toString();
+                    try {
+                        if (response.get("message").toString().equals("Product updated!")) {
+                            Toast.makeText(AdminEditProductActivity.this, "Update complete", Toast.LENGTH_SHORT).show();
+                            notyfi no = new notyfi(AdminEditProductActivity.this);
+                            no.setText("edit product complete !!!");
+                            no.show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-            }
-        });
+            });
+        }
     }
 }
