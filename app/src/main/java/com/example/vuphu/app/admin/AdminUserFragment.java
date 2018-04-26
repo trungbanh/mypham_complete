@@ -34,9 +34,10 @@ public class AdminUserFragment extends Fragment {
     private GridLayoutManager gridLayoutManager;
     private ItemOffsetDecoration itemDecoration;
 
-    private ArrayList<AcountId> list ;
+    private ArrayList<AcountId> list;
     private RecyclerView list_users;
     private SharedPreferences pre;
+
     public AdminUserFragment() {
         // Required empty public constructor
     }
@@ -61,44 +62,45 @@ public class AdminUserFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_admin_user, container, false);
-        pre =getActivity().getSharedPreferences("data", MODE_PRIVATE);
+        pre = getActivity().getSharedPreferences("data", MODE_PRIVATE);
         init(v);
         loadUser();
         return v;
     }
-    private void init (View v) {
+
+    private void init(View v) {
         list_users = v.findViewById(R.id.list_admin_user);
         list_users.setHasFixedSize(true);
-        gridLayoutManager = new GridLayoutManager(getContext(),2);
+        gridLayoutManager = new GridLayoutManager(getContext(), 2);
         list_users.setLayoutManager(gridLayoutManager);
         itemDecoration = new ItemOffsetDecoration(getContext(), R.dimen.item_offset);
         list_users.addItemDecoration(itemDecoration);
         list = new ArrayList<>();
     }
 
-    private void loadUser () {
-        AsyncHttpApi.get(pre.getString("token",""),"/user", null,
+    private void loadUser() {
+        AsyncHttpApi.get(pre.getString("token", ""), "/user", null,
                 new JsonHttpResponseHandler() {
 
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
 
-                Gson gson = new Gson();
-                JSONArray jArray = response;
-                if (jArray != null) {
-                    for (int i=0;i<jArray.length();i++){
-                        try {
-                            list.add(gson.fromJson(jArray.get(i).toString(),AcountId.class));
-                            Log.i("product",jArray.get(i).toString());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        Gson gson = new Gson();
+                        JSONArray jArray = response;
+                        if (jArray != null) {
+                            for (int i = 0; i < jArray.length(); i++) {
+                                try {
+                                    list.add(gson.fromJson(jArray.get(i).toString(), AcountId.class));
+                                    Log.i("product", jArray.get(i).toString());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
                         }
+                        AdminUserApdater.userAdap adap = new AdminUserApdater.userAdap(list, getContext());
+                        list_users.setAdapter(adap);
+                        adap.notifyDataSetChanged();
                     }
-                }
-                AdminUserApdater.userAdap adap = new AdminUserApdater.userAdap (list,getContext());
-                list_users.setAdapter(adap);
-                adap.notifyDataSetChanged();
-            }
-        });
+                });
     }
 }

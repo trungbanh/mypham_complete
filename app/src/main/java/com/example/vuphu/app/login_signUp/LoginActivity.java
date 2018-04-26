@@ -175,7 +175,6 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "incorrect email or password", Toast.LENGTH_SHORT).show();
             }
         });
-        String token = pre.getString(NetworkConst.token, "");
-        return token;
+        return pre.getString(NetworkConst.token, "");
     }
 }

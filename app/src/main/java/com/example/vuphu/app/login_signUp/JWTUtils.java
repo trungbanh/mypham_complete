@@ -12,7 +12,7 @@ public class JWTUtils {
             String[] split = JWTEncoded.split("\\.");
             Log.d("JWT_DECODED", "Header: " + getJson(split[0]));
             Log.d("JWT_DECODED", "Body: " + getJson(split[1]));
-            return getJson(split[1]).toString();
+            return getJson(split[1]);
         } catch (UnsupportedEncodingException e) {
             //Error
         }

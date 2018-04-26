@@ -1,8 +1,9 @@
 package com.example.vuphu.app.login_signUp;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,28 +13,44 @@ import android.widget.Toast;
 import com.example.vuphu.app.AcsynHttp.AsyncHttpApi;
 import com.example.vuphu.app.Dialog.notyfi;
 import com.example.vuphu.app.MainActivity;
-import com.example.vuphu.app.object.SignUpToken;
 import com.example.vuphu.app.R;
+import com.example.vuphu.app.object.SignUpToken;
 import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import cz.msebera.android.httpclient.Header;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private EditText name ;
-    private EditText email ;
-    private EditText pass ;
-    private Button signup ;
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
-    private String nameText ;
-    private String emailText ;
-    private String passText ;
+    private EditText name;
+    private EditText email;
+    private EditText pass;
+    private Button signup;
 
-    private SignUpToken token ;
+    private String nameText;
+    private String emailText;
+    private String passText;
+
+    private SignUpToken token;
+
+    public static boolean checkEmail(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.find();
+    }
+
+    /*
+     * admin@admin.com
+     * admin
+     * */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,24 +59,19 @@ public class SignUpActivity extends AppCompatActivity {
         init();
     }
 
-    /*
-    * admin@admin.com
-    * admin
-    * */
-
-    private RequestParams getRequest () {
+    private RequestParams getRequest() {
         RequestParams paramObject = new RequestParams();
 
-        paramObject.put("name",nameText);
-        paramObject.put("email",emailText);
-        paramObject.put("password",passText);
+        paramObject.put("name", nameText);
+        paramObject.put("email", emailText);
+        paramObject.put("password", passText);
 
-        return paramObject ;
+        return paramObject;
     }
 
     private boolean postResquest(RequestParams params) {
         final boolean[] result = new boolean[1];
-        AsyncHttpApi.post_signUp("/user/signup",params,new JsonHttpResponseHandler() {
+        AsyncHttpApi.post_signUp("/user/signup", params, new JsonHttpResponseHandler() {
 
             notyfi no = new notyfi(SignUpActivity.this);
 
@@ -69,14 +81,14 @@ public class SignUpActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 token = gson.fromJson(json, SignUpToken.class);
                 result[0] = true;
-                Log.i("sigup",result[0]+"");
+                Log.i("sigup", result[0] + "");
 
                 no.show();
                 Toast.makeText(SignUpActivity.this, "signup sucess", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                intent.putExtra("mail",emailText);
-                intent.putExtra("pass",passText);
+                intent.putExtra("mail", emailText);
+                intent.putExtra("pass", passText);
 
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 startActivity(intent);
@@ -86,46 +98,40 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
-                result[0] = false ;
-                Log.i("sigup",result[0]+"");
+                result[0] = false;
+                Log.i("sigup", result[0] + "");
                 no.setText("signup fail !!!");
                 no.setIcon(R.drawable.ic_delete);
                 no.show();
             }
         });
-        Log.i("sigup sum",result[0]+"");
+        Log.i("sigup sum", result[0] + "");
         return result[0];
     }
 
-    private void init () {
-        name =  findViewById(R.id.edt_name);
+    private void init() {
+        name = findViewById(R.id.edt_name);
         email = findViewById(R.id.edt_email);
-        pass =  findViewById(R.id.edt_pass);
+        pass = findViewById(R.id.edt_pass);
         signup = findViewById(R.id.btn_signup);
     }
-    void getText() {
-        nameText = name.getText().toString();
-        emailText= email.getText().toString();
-        passText = pass.getText().toString();
-    }
+
     public void signUp(View view) {
-        getText();
-        if(email.getText().toString().compareTo("@gmail.com")==0) {
-            email.setError("must be user gmail");
-            return;
+        nameText = name.getText().toString();
+        emailText = email.getText().toString();
+        passText = pass.getText().toString();
+
+        if (TextUtils.equals(nameText, "")) {
+            Toast.makeText(this, "Nickname is empty", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.equals(emailText, "")) {
+            Toast.makeText(this, "Email is empty", Toast.LENGTH_SHORT).show();
+        } else if (!checkEmail(emailText)) {
+            Toast.makeText(this, "Email is incorrect", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.equals(passText, "")) {
+            Toast.makeText(this, "Password is empty", Toast.LENGTH_SHORT).show();
+        } else {
+            postResquest(getRequest());
         }
-        if(email.getText().toString().isEmpty()) {
-            email.setError("cant null ");
-            return;
-        }
-        if(name.getText().toString().isEmpty()) {
-            name.setError("cant null ");
-            return;
-        }
-        if(pass.getText().toString().isEmpty()) {
-            pass.setError("cant null ");
-            return;
-        }
-        postResquest(getRequest());
     }
 }
+g
