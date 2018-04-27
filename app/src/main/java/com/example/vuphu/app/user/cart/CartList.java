@@ -68,6 +68,7 @@ public class CartList extends AppCompatActivity {
 
         mAdapter = new CartAdapter(Cart.getInstance().getListProduct());
         mRecyclerView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
         buyClick();
 
     }
@@ -82,7 +83,17 @@ public class CartList extends AppCompatActivity {
         buy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                postPostOrder();
+                int  checksum =0 ;
+                int money = pre.getInt("money",0);
+                checksum = money- Cart.getInstance().getSummary();
+
+                if (checksum<0) {
+                    notyfi no = new notyfi(CartList.this);
+                    no.setText("no enoght money !!!");
+                    no.show();
+                } else {
+                    postPostOrder();
+                }
             }
         });
     }
@@ -98,7 +109,8 @@ public class CartList extends AppCompatActivity {
 
 
             AsyncHttpApi.post(pre.getString("token", ""), "/orders", params, new JsonHttpResponseHandler() {
-                @Override
+
+               @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
                     Gson gson = new Gson();
@@ -106,7 +118,6 @@ public class CartList extends AppCompatActivity {
                     Log.i("payment",payment.getCreatedOrder().getId());
 
                     payment (payment.getCreatedOrder().getId());
-
 
                         Cart.getInstance().resetCart();
                     mAdapter.notifyDataSetChanged();

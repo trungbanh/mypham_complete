@@ -12,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,21 +20,26 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.vuphu.app.AcsynHttp.AsyncHttpApi;
+import com.example.vuphu.app.AcsynHttp.NetworkConst;
 import com.example.vuphu.app.admin.AdminCatogoriesFragment;
 import com.example.vuphu.app.admin.AdminOrdersFragment;
 import com.example.vuphu.app.admin.AdminUserFragment;
 import com.example.vuphu.app.login_signUp.LoginActivity;
 import com.example.vuphu.app.object.AcountId;
+import com.example.vuphu.app.object.listOrder;
 import com.example.vuphu.app.user.AddMoneyFragment;
 import com.example.vuphu.app.user.ProfileFragment;
 import com.example.vuphu.app.user.UserProfileTab.AddMoneyHistoryFragment;
 import com.example.vuphu.app.user.UserProfileTab.OrderHistoryFragment;
 import com.example.vuphu.app.user.cart.CartList;
 import com.example.vuphu.app.user.catogries.CatogriesFragment;
+import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -47,6 +53,8 @@ public class MainActivity extends AppCompatActivity
     private SharedPreferences pre;
     private SharedPreferences.Editor edit;
     private long mBackPressed;
+    private listOrder order ;
+    private AcountId u;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +76,28 @@ public class MainActivity extends AppCompatActivity
 
         pre = getSharedPreferences("data", MODE_PRIVATE);
         edit = pre.edit();
+        getToken(pre.getString("token",""));
         SearchQuery();
         initView();
         viewCart();
 
+    }
+    void getToken (String token) {
+        AsyncHttpApi.get(token,"/account",null,new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Gson gson = new Gson();
+                order = gson.fromJson(response.toString(),listOrder.class);
+                u = order.getAccountId();
+                int money = order.getBalanced();
+                edit.putInt("money",money);
+                edit.commit();
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.i("fail",errorResponse.toString());
+            }
+        });
     }
 
     private void viewCart() {

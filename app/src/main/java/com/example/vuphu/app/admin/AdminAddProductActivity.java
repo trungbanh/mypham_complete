@@ -145,13 +145,11 @@ public class AdminAddProductActivity extends AppCompatActivity {
             Cursor cursor = getContentResolver().query(selectedImage, null, null, null, null);
             assert cursor != null;
             cursor.moveToFirst();
-
             int columnIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
             mediaPath = cursor.getString(columnIndex);
             // Set the Image in ImageView for Previewing the Media
             img_product.setImageBitmap(BitmapFactory.decodeFile(mediaPath));
             cursor.close();
-
         } else {
             Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show();
         }

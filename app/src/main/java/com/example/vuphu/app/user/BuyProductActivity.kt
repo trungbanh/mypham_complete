@@ -52,6 +52,8 @@ class BuyProductActivity : AppCompatActivity() {
         pre = getSharedPreferences("data", Context.MODE_PRIVATE)
         edit = pre!!.edit()
 
+        sumary!!.text = (no).toString()
+
         val intent = intent
 
         val name = intent.getStringExtra("productName")
@@ -61,9 +63,6 @@ class BuyProductActivity : AppCompatActivity() {
         if (name == null) {
             Log.i("null", "fadfasf")
         }
-
-        getToken(pre!!.getString("token",""))
-
         productsName!!.text = name
         price!!.text = priceget.toString() + ""
 
@@ -82,32 +81,17 @@ class BuyProductActivity : AppCompatActivity() {
             quantity!!.text = no.toString()
             sumary!!.text = (no * priceget).toString()
         }
+
         buy!!.setOnClickListener {
-            val check = money?.minus(Integer.parseInt(quantity!!.text.toString()).times(no))
-            if (check?.compareTo(0)!! <0) {
-                Toast.makeText(this@BuyProductActivity, "no enough money", Toast.LENGTH_SHORT).show()
-            } else {
-                //add to cart
-                Cart.getInstance().addProduct( ProductInCart(id,no),name)
+
+                Cart.getInstance().addProduct( ProductInCart(id,no),name,sumary?.text.toString().toInt())
                 Toast.makeText(applicationContext,"add to list complete !!!",Toast.LENGTH_SHORT).show()
                 val intent = Intent(this,MainActivity::class.java)
                 startActivity(intent)
                 //postPostOrder(product.id, no)
-            }
         }
     }
-    internal fun getToken(token: String?) {
-        AsyncHttpApi.get(token, "/account", null, object : JsonHttpResponseHandler() {
-            override fun onSuccess(statusCode: Int, headers: Array<Header>?, response: JSONObject?) {
-                val gson = Gson()
-                var order = gson.fromJson<listOrder>(response!!.toString(), listOrder::class.java!!)
-                money = order.balanced
-            }
-            override fun onFailure(statusCode: Int, headers: Array<Header>?, throwable: Throwable, errorResponse: JSONObject?) {
-                Log.i("fail", errorResponse!!.toString())
-            }
-        })
-    }
+
     private fun init() {
         productsName = findViewById(R.id.tv_buy_name)
         price = findViewById(R.id.tv_buy_price)
@@ -117,7 +101,4 @@ class BuyProductActivity : AppCompatActivity() {
         add = findViewById(R.id.usr_add_order)
         buy = findViewById(R.id.btn_buy)
     }
-
-
-
 }

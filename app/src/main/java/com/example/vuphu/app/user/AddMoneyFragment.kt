@@ -41,6 +41,8 @@ class AddMoneyFragment : Fragment() {
 
 
     private var pre: SharedPreferences? = null
+    private var edit: SharedPreferences.Editor? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +58,7 @@ class AddMoneyFragment : Fragment() {
         addmoney = view.findViewById(R.id.btn_add_money)
 
         pre = activity!!.getSharedPreferences("data", Context.MODE_PRIVATE)
+        edit = pre?.edit()
 
         addmoney!!.setOnClickListener {
             if (TextUtils.isEmpty(numbercard?.text.toString())) {
@@ -68,6 +71,22 @@ class AddMoneyFragment : Fragment() {
         return view
     }
 
+    internal fun getToken(token: String?) {
+        AsyncHttpApi.get(token, "/account", null, object : JsonHttpResponseHandler() {
+            override fun onSuccess(statusCode: Int, headers: Array<Header>?, response: JSONObject?) {
+                val gson = Gson()
+                var order = gson.fromJson(response!!.toString(), listOrder::class.java)
+                val money = order.getBalanced()!!
+                edit?.putInt("money", money!!)
+                edit?.commit()
+            }
+
+            override fun onFailure(statusCode: Int, headers: Array<Header>?, throwable: Throwable, errorResponse: JSONObject?) {
+                Log.i("fail", errorResponse!!.toString())
+            }
+        })
+    }
+
     private fun addCast(token: String?, num: String) {
         val params = RequestParams()
         params.put("balance",num.toInt())
@@ -78,6 +97,7 @@ class AddMoneyFragment : Fragment() {
                 no.setText("deposit done !")
                 no.setIcon(R.drawable.ic_add_money)
                 no.show();
+                getToken(pre?.getString("token",""))
             }
         })
     }

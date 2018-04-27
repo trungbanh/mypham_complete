@@ -32,6 +32,7 @@ class AddMoneyHistoryFragment : Fragment() {
     internal lateinit var gridLayoutManager: LinearLayoutManager
     private var pre: SharedPreferences? = null
 
+
     internal lateinit var order: listOrder
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +51,7 @@ class AddMoneyHistoryFragment : Fragment() {
         gridLayoutManager = LinearLayoutManager(context)
 
         pre = activity!!.getSharedPreferences("data", Context.MODE_PRIVATE)
+
 
         getToken(pre!!.getString("token", ""))
 
@@ -78,6 +80,7 @@ class AddMoneyHistoryFragment : Fragment() {
             }
         })
     }
+
     companion object {
         public fun newInstance(): AddMoneyHistoryFragment {
             val fragment = AddMoneyHistoryFragment()

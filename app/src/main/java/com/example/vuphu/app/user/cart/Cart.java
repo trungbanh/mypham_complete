@@ -16,10 +16,12 @@ import java.util.ArrayList;
 public class Cart {
     private ArrayList<ProductInCart> productBuys ;
     private ArrayList<String> name ;
+    private ArrayList<Integer> price ;
 
     public Cart () {
         this.productBuys = new ArrayList<>();
         name = new ArrayList<>();
+        price = new ArrayList<>();
     }
 
     private static Cart Instance;
@@ -31,15 +33,16 @@ public class Cart {
         return Instance;
     }
 
-    public void addProduct (ProductInCart product,String name) {
+    public void addProduct (ProductInCart product,String name ,Integer price) {
         productBuys.add(product);
         this.name.add(name);
+        this.price.add(price);
     }
 
     public ArrayList<ProductShow> getListProduct (){
         ArrayList<ProductShow> arrayList = new ArrayList<>();
         for (int i = 0 ; i< productBuys.size() ; i++) {
-            arrayList.add(new ProductShow(name.get(i).toString(),productBuys.get(i).getQuatityBuy()));
+            arrayList.add(new ProductShow(name.get(i).toString(),productBuys.get(i).getQuatityBuy(),price.get(i)));
         }
 
         return  arrayList;
@@ -60,20 +63,21 @@ public class Cart {
     public Cart resetCart () {
         return Instance = new Cart();
     }
-
-/*{
-	"products": [
-		{
-			"product": "5abf3efdb9f9e80cbcb8389a",
-			"quatityBuy": 5
-		},
-		{
-			"product": "5ac31651ddf6b41b78dd1657",
-			"quatityBuy": 2
-		}
-	]
-}*/
-
+    public int getSummary () {
+        int sum =0;
+        for (int i = 0; i<price.size();i++) {
+            sum = sum + price.get(i);
+        }
+        return sum;
+    }
+    public void Delt (int position){
+        productBuys.remove(position);
+        name.remove(position);
+        price.remove(position);
+    }
+    public void Edit (int position,int num) {
+        productBuys.get(position).setQuatityBuy(num);
+    }
 
 
 }
