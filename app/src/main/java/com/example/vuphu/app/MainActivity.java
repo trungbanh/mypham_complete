@@ -204,8 +204,6 @@ public class MainActivity extends AppCompatActivity
     private void applyExit() {
         if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
             finish();
-        } else {
-            Toast.makeText(this, "Press Again to exit", Toast.LENGTH_LONG).show();
         }
         mBackPressed = System.currentTimeMillis();
     }

@@ -48,11 +48,11 @@ public class AdminAddProductActivity extends AppCompatActivity {
     private Button btn_add;
 
     private String arr[] = {
-            "Lotion",
-            "Hair care",
-            "Skin care cosmetics",
-            "Perfume",
-            "Lipstick"};
+            "lotion",
+            "hair care",
+            "skin care cosmetics",
+            "perfume",
+            "lipstick"};
 
     private SharedPreferences pre;
     private ProgressDialog progressBar;
@@ -72,7 +72,6 @@ public class AdminAddProductActivity extends AppCompatActivity {
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         setTitle("Add product");
         progressBar = new ProgressDialog(this);
-        progressBar.setMessage("Đang xử lí...");
         pre = getSharedPreferences("data", MODE_PRIVATE);
         setDataType();
     }

@@ -34,6 +34,10 @@ class AddMoneyFragment : Fragment() {
 
 
     private var numbercard: EditText? = null
+    private var seri: EditText? = null
+    private var code: EditText? = null
+
+
 
     private var addmoney: Button? = null
 
@@ -55,7 +59,9 @@ class AddMoneyFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_add_money, container, false)
 
         numbercard = view.findViewById(R.id.edt_card_number)
-        addmoney = view.findViewById(R.id.btn_add_money)
+        seri = view.findViewById(R.id.edt_card_seri)
+        code = view.findViewById(R.id.edt_card_number)
+        addmoney = view.findViewById(R.id.edt_money)
 
         pre = activity!!.getSharedPreferences("data", Context.MODE_PRIVATE)
         edit = pre?.edit()
@@ -63,9 +69,23 @@ class AddMoneyFragment : Fragment() {
         addmoney!!.setOnClickListener {
             if (TextUtils.isEmpty(numbercard?.text.toString())) {
                 numbercard?.error= "cant be empty"
-            } else {
+            }
+            if (TextUtils.isEmpty(seri?.text.toString()) ) {
+                seri?.error= "cant be empty"
+            }
+            if (seri?.text!!.length !=13) {
+                seri?.error= "not enough 13 element "
+            }
+            if (TextUtils.isEmpty(seri?.text.toString()) ) {
+                seri?.error= "cant be empty"
+            }
+            if (seri?.text!!.length !=13) {
+                seri?.error= "not enough 13 element"
+            }
+            else {
                 addCast(pre!!.getString("token", ""), numbercard?.text.toString())
             }
+
 
         }
         return view
@@ -95,7 +115,6 @@ class AddMoneyFragment : Fragment() {
             override fun onSuccess(statusCode: Int, headers: Array<Header>?, response: JSONObject?) {
                 val no = notyfi(activity)
                 no.setText("deposit done !")
-                no.setIcon(R.drawable.ic_add_money)
                 no.show();
                 getToken(pre?.getString("token",""))
             }

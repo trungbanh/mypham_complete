@@ -100,7 +100,7 @@ public class UserInfoFragment extends Fragment {
                 String mes = gson.fromJson(response.toString(),String.class);
                 if (mes.equals("User updated!")) {
                     notyfi no =new notyfi(getActivity());
-                    no.setText("update info complete !");
+                    no.setText("Update info complete !");
                     no.show();
                 }
             }
@@ -108,10 +108,8 @@ public class UserInfoFragment extends Fragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
-                Log.e("error_put",throwable.getMessage());
                 notyfi no =new notyfi(getActivity());
                 no.setText("update fail !");
-                no.setIcon(R.drawable.ic_delete);
                 no.show();
             }
         });

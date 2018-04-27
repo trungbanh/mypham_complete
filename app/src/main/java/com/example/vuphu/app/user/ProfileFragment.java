@@ -2,9 +2,7 @@ package com.example.vuphu.app.user;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +18,6 @@ import com.example.vuphu.app.AcsynHttp.NetworkConst;
 import com.example.vuphu.app.R;
 import com.example.vuphu.app.object.listOrder;
 import com.example.vuphu.app.object.AcountId;
-import com.example.vuphu.app.user.adapter.TabPagerAdapter;
 import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -139,8 +136,6 @@ public class ProfileFragment extends Fragment {
         String pname = name.getText().toString();
         String pphone = phone.getText().toString();
         String paddrs = addrss.getText().toString();
-
-
 
         params.put("address",paddrs);
         params.put("name",pname);

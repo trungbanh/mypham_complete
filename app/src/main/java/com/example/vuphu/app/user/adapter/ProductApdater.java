@@ -76,7 +76,6 @@ public class ProductApdater {
                     }catch (Exception e) {}
                 }
             });
-            Log.i("image",list.get(position).getProductImage());
             Picasso.get().load(NetworkConst.network+"/"+list.get(position).getProductImage().replace("\\","/")).error(R.drawable.ic_terrain_black_24dp).placeholder(R.drawable.mypham).into(holder.img_product);
         }
 

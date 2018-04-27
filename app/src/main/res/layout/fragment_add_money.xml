@@ -49,7 +49,7 @@
                         android:id="@+id/edt_card_seri"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="seri code"
+                        android:hint="@string/seri_code"
                         android:inputType="numberDecimal" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -62,7 +62,7 @@
                         android:id="@+id/edt_money"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="pay code"
+                        android:hint="@string/pay_code"
                         android:inputType="numberDecimal" />
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>

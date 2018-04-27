@@ -34,8 +34,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     }
     @Override
     public void onBindViewHolder(@NonNull final CartAdapter.ViewHolder holder, final int position) {
-        holder.name.setText("name: "+productInCarts.get(position).getName());
-        holder.number.setText("quantity: "+String.valueOf(productInCarts.get(position).getQuatity()));
+        holder.name.setText("Name: "+productInCarts.get(position).getName());
+        holder.number.setText("Quantity: "+String.valueOf(productInCarts.get(position).getQuatity()));
 
         holder.det.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,11 +52,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             public void onClick(View v) {
                 final Dialog dialog = new Dialog(holder.itemView.getContext());
                 dialog.setContentView(R.layout.dialog_cart_edit);
-                dialog.setTitle("Title...");
-
                 // set the custom dialog components - text, image and button
                 TextView name = (TextView) dialog.findViewById(R.id.tv_product_cart_edit);
-                name.setText("name: "+productInCarts.get(position).getName());
+                name.setText("Name: "+productInCarts.get(position).getName());
                 final EditText num = dialog.findViewById(R.id.edt_product_cart_edit);
                 Button dialogButton = (Button) dialog.findViewById(R.id.dialog_submit);
                 dialogButton.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +65,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                         productInCarts.get(position).setNum(qua);
                         Log.i("number",String.valueOf(productInCarts.get(position).getQuatity() +" "+qua ));
                         Cart.getInstance().getListProduct();
-                        holder.number.setText("quantity: "+String.valueOf(productInCarts.get(position).getQuatity()));
+                        holder.number.setText("Quantity: "+String.valueOf(productInCarts.get(position).getQuatity()));
                         notifyDataSetChanged();
                         dialog.dismiss();
                     }

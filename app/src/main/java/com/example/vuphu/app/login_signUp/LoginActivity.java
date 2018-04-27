@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void Pre_process() {
         progressBar.setMessage("Đang xử lí...");
-        mail = intent.getStringExtra("email");
+        mail = intent.getStringExtra("mail");
         pass = intent.getStringExtra("pass");
         emailInput.setText(mail);
         passInput.setText(pass);
@@ -116,7 +116,6 @@ public class LoginActivity extends AppCompatActivity {
             params.put("email", mail);
             params.put("password", pass);
             postSignIn(params,mail,pass);
-
         }
     }
     public void signUp(View view) {
@@ -138,36 +137,48 @@ public class LoginActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 edit.commit();
+                doLogin();
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Log.e("error", throwable.getMessage());
-                Toast.makeText(LoginActivity.this, "incorrect email or password", Toast.LENGTH_SHORT).show();
+
+                notyfi no = new notyfi(LoginActivity.this);
+                no.setText("login fail !!!");
+                no.show();
+
             }
         });
         String token = pre.getString(NetworkConst.token, "");
-        if (!token.isEmpty()) {
-            if (mail.equals("admin@admin.com")) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                edit.putString("type_user", "admin");
-                edit.commit();
-                if (!pre.getString(NetworkConst.token, "").isEmpty() &&
-                        !pre.getString("type_user", "").isEmpty()) {
-                    notyfi no = new notyfi(LoginActivity.this);
-                    no.show();
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class)); }progressBar.hide();
-                finish(); } else {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                edit.putString("type_user", "user");
-                edit.commit();
-                if (!pre.getString(NetworkConst.token, "").isEmpty() &&
-                        !pre.getString("type_user", "").isEmpty()) {
-                    notyfi no = new notyfi(LoginActivity.this);
-                    no.show();
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class)); }progressBar.hide();
-                finish();
-            }
-        }
         return token;
     }
+    private void doLogin () {
+        if (emailInput.getText().toString().equals("admin@admin.com")) {
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            edit.putString("type_user", "admin");
+            edit.commit();
+            if (!pre.getString(NetworkConst.token, "").isEmpty() &&
+                    !pre.getString("type_user", "").isEmpty()) {
+                notyfi no = new notyfi(LoginActivity.this);
+                no.show();
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            }
+            progressBar.hide();
+            finish();
+        } else {
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            edit.putString("type_user", "user");
+            edit.commit();
+            if (!pre.getString(NetworkConst.token, "").isEmpty() &&
+                    !pre.getString("type_user", "").isEmpty()) {
+                notyfi no = new notyfi(LoginActivity.this);
+                no.show();
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            }
+            progressBar.hide();
+            finish();
+        }
+    }
 }
+
+

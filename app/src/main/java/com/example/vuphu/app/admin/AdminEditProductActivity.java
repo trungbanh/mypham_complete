@@ -105,7 +105,8 @@ public class AdminEditProductActivity extends AppCompatActivity {
         btn_update = findViewById(R.id.btn_admin_edit_product);
         edt_price = findViewById(R.id.edt_admin_price_product);
         select = findViewById(R.id.tv_select);
-        listType = new ArrayAdapter<>(this.getApplicationContext(), android.R.layout.simple_spinner_item, arr);
+        listType = new ArrayAdapter<>(this.getApplicationContext(),
+                android.R.layout.simple_spinner_item, arr);
         listType.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
     }
 
@@ -113,7 +114,8 @@ public class AdminEditProductActivity extends AppCompatActivity {
         setTitle(product.getName());
         edt_name_product.setText(product.getName());
         edt_quantity.setText(String.valueOf(product.getQuatity()));
-        //type_product.setText(product.getType());
+        select.setText(product.getType());
+        edt_price.setText(product.getPrice().toString());
         edt_desc.setText(product.getDescription());
         Picasso.get().load(NetworkConst.network + "/" + product.getProductImage()
                 .replace("\\", "/")).error(R.drawable.ic_terrain_black_24dp)
@@ -191,7 +193,6 @@ public class AdminEditProductActivity extends AppCompatActivity {
                     response.toString();
                     try {
                         if (response.get("message").toString().equals("Product updated!")) {
-                            Toast.makeText(AdminEditProductActivity.this, "Update complete", Toast.LENGTH_SHORT).show();
                             notyfi no = new notyfi(AdminEditProductActivity.this);
                             no.setText("edit product complete !!!");
                             no.show();

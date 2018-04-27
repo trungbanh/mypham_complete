@@ -61,7 +61,6 @@ class BuyProductActivity : AppCompatActivity() {
         val id = intent.getStringExtra("productId")
 
         if (name == null) {
-            Log.i("null", "fadfasf")
         }
         productsName!!.text = name
         price!!.text = priceget.toString() + ""
@@ -88,7 +87,6 @@ class BuyProductActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext,"add to list complete !!!",Toast.LENGTH_SHORT).show()
                 val intent = Intent(this,MainActivity::class.java)
                 startActivity(intent)
-                //postPostOrder(product.id, no)
         }
     }
 

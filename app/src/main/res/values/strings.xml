@@ -7,7 +7,7 @@
     <string name="title_activity_detail_product">DetailProductActivity</string>
     <string name="large_text">Material is the metaphor</string>
     <string name="thongtintaikhoan">Info accounts</string>
-    <string name="danhmucsanpham">Category</string>
+    <string name="danhmucsanpham">Home</string>
     <string name="naptien">Recharge</string>
     <string name="donhang">Orders</string>
     <string name="quanlinguoidung">User management</string>
@@ -40,4 +40,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="buy">Buy</string>
+    <string name="overview">Overview</string>
+    <string name="pay_code">Pay code</string>
+    <string name="seri_code">Seri code</string>
 </resources>

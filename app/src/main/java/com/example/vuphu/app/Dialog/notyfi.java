@@ -55,5 +55,6 @@ public class notyfi {
     public void show() {
         dialog.show();
     }
+    public void dismiss () {dialog.dismiss();}
 
 }

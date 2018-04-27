@@ -49,7 +49,7 @@ public class DetailProductActivity extends AppCompatActivity {
         Picasso.get().load(NetworkConst.network+"/"+pathImage.replace("\\","/")).error(R.drawable.ic_terrain_black_24dp).placeholder(R.drawable.mypham).into(imageView);
 
         price = findViewById(R.id.tv_price);
-        price.setText("Giá: "+priceget+" đ");
+        price.setText("Price: "+priceget+" $");
         desprition = findViewById(R.id.tv_description);
         desprition.setText(des);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

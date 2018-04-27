@@ -104,6 +104,13 @@ public class CartList extends AppCompatActivity {
         try {
             //JSONObject jsnobject = new JSONObject(Cart.getInstance().getPostJson());
 
+            if (Cart.getInstance().getPostJson().equals("[]")){
+                notyfi no = new notyfi(CartList.this);
+                no.setText("null cart");
+                no.show();
+                return;
+            }
+
             RequestParams params = new RequestParams();
             params.put("products",Cart.getInstance().getPostJson());
 
@@ -125,7 +132,6 @@ public class CartList extends AppCompatActivity {
                     notyfi no = new notyfi(CartList.this);
                     no.show();
                 }
-
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);

@@ -18,6 +18,7 @@ public class CatogriesFragment extends Fragment {
 
     private TabLayout tabCato ;
     private ViewPager viewPagerCato;
+    CatoAdapter adapter;
 
 
     public CatogriesFragment() {
@@ -46,18 +47,21 @@ public class CatogriesFragment extends Fragment {
         tabCato = v.findViewById(R.id.tab_layout_cato);
         viewPagerCato = v.findViewById(R.id.view_pager);
 
-        CatoAdapter adapter = new CatoAdapter(v.getContext(), getFragmentManager());
+        adapter = new CatoAdapter(v.getContext(), getFragmentManager());
 
         viewPagerCato.setAdapter(adapter);
 
         tabCato.setupWithViewPager(viewPagerCato);
 
-
-
         return v;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        viewPagerCato.setAdapter(adapter);
+        tabCato.setupWithViewPager(viewPagerCato);
 
-
+    }
 }
 

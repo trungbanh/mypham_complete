@@ -61,11 +61,9 @@ public class SignUpActivity extends AppCompatActivity {
 
     private RequestParams getRequest() {
         RequestParams paramObject = new RequestParams();
-
         paramObject.put("name", nameText);
         paramObject.put("email", emailText);
         paramObject.put("password", passText);
-
         return paramObject;
     }
 
@@ -81,34 +79,24 @@ public class SignUpActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 token = gson.fromJson(json, SignUpToken.class);
                 result[0] = true;
-                Log.i("sigup", result[0] + "");
-
                 no.show();
-                Toast.makeText(SignUpActivity.this, "signup sucess", Toast.LENGTH_SHORT).show();
-
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 intent.putExtra("mail", emailText);
                 intent.putExtra("pass", passText);
-
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 startActivity(intent);
 
             }
-
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
                 result[0] = false;
-                Log.i("sigup", result[0] + "");
-                no.setText("signup fail !!!");
-                no.setIcon(R.drawable.ic_delete);
+                no.setText("Email already exists !!!");
                 no.show();
             }
         });
         Log.i("sigup sum", result[0] + "");
         return result[0];
     }
-
     private void init() {
         name = findViewById(R.id.edt_name);
         email = findViewById(R.id.edt_email);
@@ -122,13 +110,16 @@ public class SignUpActivity extends AppCompatActivity {
         passText = pass.getText().toString();
 
         if (TextUtils.equals(nameText, "")) {
-            Toast.makeText(this, "Nickname is empty", Toast.LENGTH_SHORT).show();
+            name.setError("Nickname is empty");
         } else if (TextUtils.equals(emailText, "")) {
-            Toast.makeText(this, "Email is empty", Toast.LENGTH_SHORT).show();
+            email.setError("Email is empty");
+
         } else if (!checkEmail(emailText)) {
-            Toast.makeText(this, "Email is incorrect", Toast.LENGTH_SHORT).show();
+            email.setError("Email is incorrect");
         } else if (TextUtils.equals(passText, "")) {
-            Toast.makeText(this, "Password is empty", Toast.LENGTH_SHORT).show();
+            pass.setError("Password is empty");
+        }else if (passText.length() < 8) {
+            pass.setError("Password is too short");
         } else {
             postResquest(getRequest());
         }
