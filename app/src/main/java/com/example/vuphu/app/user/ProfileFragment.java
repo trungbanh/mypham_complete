@@ -49,7 +49,6 @@ public class ProfileFragment extends Fragment {
 
     }
 
-
     public static ProfileFragment newInstance(AcountId user) {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
@@ -162,5 +161,4 @@ public class ProfileFragment extends Fragment {
             }
         });
     }
-
 }
