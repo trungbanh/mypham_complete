@@ -37,12 +37,7 @@ class AddMoneyFragment : Fragment() {
     private var seri: EditText? = null
     private var code: EditText? = null
 
-
-
     private var addmoney: Button? = null
-
-    private var money = null
-
 
     private var pre: SharedPreferences? = null
     private var edit: SharedPreferences.Editor? = null
@@ -52,7 +47,6 @@ class AddMoneyFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
     }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment

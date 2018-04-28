@@ -67,25 +67,25 @@ public class AdminOrdersAdapter {
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public void onBindViewHolder(orderViewHolder holder, final int position) {
-            holder.tv_name.setText(list.get(position).getOwnerUid());
+            holder.tv_name.setText(list.get(position).get_id());
             holder.tv_product.setText(list.get(position).getProduct());
             holder.tv_quantity.setText(list.get(position).getQuatityBuy());
             holder.tv_status.setText(list.get(position).getStatus());
 
             if (list.get(position).getStatus().equals("paid")) {
                 ColorStateList csl = AppCompatResources.getColorStateList(context, R.color.colorPrimary);
-//                holder.btn_paid.setImageTintList(csl);
+                holder.btn_paid.setImageTintList(csl);
             } else {
                 ColorStateList csl = AppCompatResources.getColorStateList(context, android.R.color.black);
-//                holder.btn_paid.setImageTintList(csl);
+                holder.btn_paid.setImageTintList(csl);
             }
             holder.btn_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
                     new AlertDialog.Builder(context)
-                            .setTitle("Xóa")
-                            .setMessage("Bạn có chắc muốn xóa?")
+                            .setTitle("Delete item ?")
+                            .setMessage("are your really want to delete ?")
                             .setIcon(android.R.drawable.ic_dialog_alert)
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
