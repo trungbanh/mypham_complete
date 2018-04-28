@@ -94,6 +94,8 @@ public class AdminCatogoriesFragment extends Fragment {
     }
 
     public void loafProduct() {
+
+        product.clear();
         AsyncHttpApi.get(pre.getString(NetworkConst.token, ""), "/products/", null,
                 new JsonHttpResponseHandler() {
                     @Override
