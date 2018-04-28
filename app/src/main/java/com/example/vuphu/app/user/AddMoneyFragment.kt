@@ -60,8 +60,9 @@ class AddMoneyFragment : Fragment() {
 
         numbercard = view.findViewById(R.id.edt_card_number)
         seri = view.findViewById(R.id.edt_card_seri)
-        code = view.findViewById(R.id.edt_card_number)
-        addmoney = view.findViewById(R.id.edt_money)
+        code = view.findViewById(R.id.edt_money)
+
+        addmoney = view.findViewById(R.id.btn_add_money);
 
         pre = activity!!.getSharedPreferences("data", Context.MODE_PRIVATE)
         edit = pre?.edit()
@@ -76,11 +77,11 @@ class AddMoneyFragment : Fragment() {
             if (seri?.text!!.length !=13) {
                 seri?.error= "not enough 13 element "
             }
-            if (TextUtils.isEmpty(seri?.text.toString()) ) {
-                seri?.error= "cant be empty"
+            if (TextUtils.isEmpty(code?.text.toString()) ) {
+                code?.error= "cant be empty"
             }
-            if (seri?.text!!.length !=13) {
-                seri?.error= "not enough 13 element"
+            if (code?.text!!.length !=13) {
+                code?.error= "not enough 13 element"
             }
             else {
                 addCast(pre!!.getString("token", ""), numbercard?.text.toString())
@@ -110,7 +111,6 @@ class AddMoneyFragment : Fragment() {
     private fun addCast(token: String?, num: String) {
         val params = RequestParams()
         params.put("balance",num.toInt())
-
         AsyncHttpApi.post(token, "/account/deposit", params, object : JsonHttpResponseHandler() {
             override fun onSuccess(statusCode: Int, headers: Array<Header>?, response: JSONObject?) {
                 val no = notyfi(activity)
@@ -124,11 +124,8 @@ class AddMoneyFragment : Fragment() {
         fun newInstance(): AddMoneyFragment {
             val fragment = AddMoneyFragment()
             val args = Bundle()
-
             fragment.arguments = args
             return fragment
         }
     }
-
-
 }

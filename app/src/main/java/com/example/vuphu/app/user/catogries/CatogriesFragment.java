@@ -59,9 +59,6 @@ public class CatogriesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        viewPagerCato.setAdapter(adapter);
-        tabCato.setupWithViewPager(viewPagerCato);
-
     }
 }
 
