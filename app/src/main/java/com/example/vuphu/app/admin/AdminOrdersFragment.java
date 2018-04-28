@@ -64,6 +64,8 @@ public class AdminOrdersFragment extends Fragment {
     }
 
     private void loadOrder() {
+        list.clear();
+
         ApiUtils.getAPIService().adminGetOrder("Bearer " + pre.getString(NetworkConst.token, ""))
                 .enqueue(new Callback<List<order>>() {
                     @Override
@@ -86,7 +88,6 @@ public class AdminOrdersFragment extends Fragment {
                         list_order.setAdapter(adap);
                         adap.notifyDataSetChanged();
                     }
-
                     @Override
                     public void onFailure(Call<List<order>> call, Throwable t) {
                     }

@@ -103,7 +103,7 @@ public class ProfileFragment extends Fragment {
                     return;
                 }
                 upDateInfo(pre.getString("token",""));
-                Toast.makeText(getActivity(), "update complete!!!", Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -118,7 +118,8 @@ public class ProfileFragment extends Fragment {
                 Gson gson = new Gson();
                 String mes = gson.fromJson(response.toString(),String.class);
                 if (mes.equals("User updated!")) {
-
+                    Toast.makeText(getActivity(), "update complete!!!", Toast.LENGTH_SHORT).show();
+                    getToken(pre.getString("token",""));
                 }
             }
 
@@ -133,7 +134,7 @@ public class ProfileFragment extends Fragment {
     private RequestParams getPamrams () {
         RequestParams params = new RequestParams();
 
-        String pname = name.getText().toString();
+        String pname = nameedt.getText().toString();
         String pphone = phone.getText().toString();
         String paddrs = addrss.getText().toString();
 
@@ -143,7 +144,6 @@ public class ProfileFragment extends Fragment {
 
         return params;
     }
-
 
     void getToken (String token) {
         AsyncHttpApi.get(token,"/account",null,new JsonHttpResponseHandler() {
